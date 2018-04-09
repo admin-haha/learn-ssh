@@ -1,0 +1,16 @@
+ul,ol,li,p {margin:0;padding:0;}
+ol,ul {list-style:none;}
+
+.focustool{width:935px; overflow:hidden; padding:5px 0 10px; margin:0 auto; position:relative;}
+.ftoollist{width:4655px; position:relative;}
+.ftoollist img{display:block; width:129px; height:69px; margin-bottom:3px;}
+.ftoollist a{background-color:#99CCFF; display:block; width:129px; padding:4px 0 4px 4px; position:relative;-webkit-transition:all .3s linear;transition:all .3s linear;}
+.ftoollist li{float:left; cursor:pointer; -webkit-transition:all .3s linear; transition:all .3s linear;}
+.ftoollist .imgname{line-height:25px; text-align:center;  font-family:\5FAE\8F6F\96C5\9ED1; font-weight:400; font-size:18px; height:25px; overflow:hidden; cursor:pointer;}
+.ftoollist .imgshortcat{line-height:20px; text-align:center; font-size:12px; height:20px; overflow:hidden; cursor:pointer;}
+.ftoollist a:hover{background-color:#503769; padding:4px; margin-right:-4px; z-index:100; top:-5px;}
+.ftoollist a:hover .imgname{color:#DBC98C;}
+.ftoollist a:hover .imgshortcat{color:#FFF;}
+.ftoollist .on a{background-color:#503769; padding:4px; margin-right:-4px; z-index:100; top:-5px;}
+.ftoollist .on .imgname{color:#DBC98C;}
+.ftoollist .on .imgshortcat{color:#FFF;}
