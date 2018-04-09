@@ -25,35 +25,22 @@ public class LoginController {
 	}
 	
 	
-	/**
-	 * 登陆
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public String login(HttpServletRequest request,HttpServletResponse response) {
-		
-		
-		return "/index";
-	}
-	
 	//非法登录，直接返回至登录页
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String illegalLogin(final HttpServletRequest request) {
 		return  "redirect:/login.jsp";
 	}
 	//不接收Get请求
-	@RequestMapping(value = "/login.fbi", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(final HttpServletRequest request, final HttpServletResponse response,
 			final ModelMap context, final Integer ownerId, final String account,
 			final String password, final String loginUrl, final String yanZhengMa,final String tenantCode) {
 
-		return "redirect:/index.fbi";
+		return "redirect:/index";
 
 	}
 
-	@RequestMapping(value = "/logout.fbi")
+	@RequestMapping(value = "/logout")
 	public String logout(final HttpServletRequest request, final HttpServletResponse response) {
 		return "/session_error";
 	}

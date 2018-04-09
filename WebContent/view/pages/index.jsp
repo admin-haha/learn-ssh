@@ -16,6 +16,7 @@
 		<script type="text/javascript" src="/jquery-easyui/jquery.easyui.min.js" ></script>
 		<script type="text/javascript" src="/jquery-easyui/locale/easyui-lang-zh_CN.js" ></script>
 		<script type="text/javascript" src="/js/function_tree.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
         <script>
 	       function exit(){
 	    	   $.messager.confirm('提示','将要退出,确定要操作吗？',function(r){  

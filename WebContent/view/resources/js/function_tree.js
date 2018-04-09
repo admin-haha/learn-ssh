@@ -5,7 +5,7 @@ $( function() {
 var menu = [];
 $( function() {
 	$.ajaxSettings.async = false;
-	$.getJSON('/function/query_left_tree.fbi', {
+	$.getJSON('/function/list', {
 		type :"1",
 		parentId :"-1",
 		c :Math.round(Math.random() * 10000)
@@ -37,7 +37,7 @@ function loadsubFunction(funcid, parentid) {
 	$('#subFunc' + funcid).tree(
 			{
 				checkbox :false,
-				url :'/function/query_left_tree.fbi?type=2&parentId=' + funcid
+				url :'/function/list?type=2&parentId=' + funcid
 						+ '&c=' + Math.round(Math.random() * 10000) + '',
 				onClick : function(node) {
 					$(this).tree('toggle', node.target);
