@@ -18,10 +18,11 @@ public class RolesRepository extends BaseRepository<Roles> {
 	@Override
 	public void save(Roles vo) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("insert into roles values(id,name)");
+		sql.append("insert into roles(role_id,name,memo)");
 		sql.append(" values (");
 		sql.append("'").append(vo.getId()).append("',");
-		sql.append("'").append(vo.getName()).append("') ");
+		sql.append("'").append(vo.getName()).append("', ");
+		sql.append("'").append(vo.getMemo()).append("') ");
 		logger.info("【角色】保存角色的sql为:"+sql.toString());
 		jdbcTemplate.execute(sql.toString());
 	}

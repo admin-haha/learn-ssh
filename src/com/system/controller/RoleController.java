@@ -3,14 +3,25 @@ package com.system.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.system.po.Roles;
+import com.system.repository.RolesRepository;
 
 @Controller
 @RequestMapping("/role")
 public class RoleController {
 
+	Logger logger = LoggerFactory.getLogger(RoleController.class);
+	@Autowired
+	RolesRepository rolesRepository;
+	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String queryAllRoles(HttpServletRequest request,HttpServletResponse response) {
 		
@@ -37,8 +48,11 @@ public class RoleController {
 	}
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public void saveRole(HttpServletRequest request,HttpServletResponse response) {
-	
+	public void saveRole(HttpServletRequest request,HttpServletResponse response,String name,String memo) {
+		Roles role = new Roles();
+		role.setName(name);
+		role.setMemo(memo);
+		rolesRepository.save(role);
 		
 	}
 	
