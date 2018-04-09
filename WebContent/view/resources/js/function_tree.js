@@ -2,6 +2,7 @@ $( function() {
 	tabClose();
 	tabCloseEven();
 })
+
 var menu = [];
 $( function() {
 	$.ajaxSettings.async = false;

@@ -24,7 +24,6 @@ public class LoginController {
 		return "/login";
 	}
 	
-	
 	//非法登录，直接返回至登录页
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String illegalLogin(final HttpServletRequest request) {
