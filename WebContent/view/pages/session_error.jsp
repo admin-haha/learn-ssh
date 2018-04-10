@@ -6,7 +6,7 @@ pageEncoding="UTF-8" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>退出</title>
         <script type="text/javascript">
-                parent.parent.location = '/login.jsp';
+                parent.parent.location = '/login';
         </script>
     </head>
     <body>

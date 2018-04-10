@@ -14,6 +14,8 @@ public class Function extends BasePo {
 	private String funcUrl; //权限url
 	
 	private String funcOrder; //权限顺序
+	
+	private String parentId;  //父权限ID
 
 	public String getName() {
 		return name;
@@ -37,5 +39,13 @@ public class Function extends BasePo {
 
 	public void setFuncOrder(String funcOrder) {
 		this.funcOrder = funcOrder;
+	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 }

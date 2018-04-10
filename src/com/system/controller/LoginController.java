@@ -27,7 +27,7 @@ public class LoginController {
 	//非法登录，直接返回至登录页
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String illegalLogin(final HttpServletRequest request) {
-		return  "redirect:/login.jsp";
+		return  "redirect:/index";
 	}
 	//不接收Get请求
 	@RequestMapping(value = "/login", method = RequestMethod.POST)

@@ -16,9 +16,9 @@ import com.system.repository.RolesRepository;
 
 @Controller
 @RequestMapping("/role")
-public class RoleController {
+public class RolesController {
 
-	Logger logger = LoggerFactory.getLogger(RoleController.class);
+	Logger logger = LoggerFactory.getLogger(RolesController.class);
 	@Autowired
 	RolesRepository rolesRepository;
 	
@@ -48,11 +48,11 @@ public class RoleController {
 	}
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public void saveRole(HttpServletRequest request,HttpServletResponse response,String name,String memo) {
+	public void saveRole(HttpServletRequest request,HttpServletResponse response,String name,String memo,@RequestBody Roles vo) {
 		Roles role = new Roles();
 		role.setName(name);
 		role.setMemo(memo);
-		rolesRepository.save(role);
+		rolesRepository.save(vo);
 		
 	}
 	
