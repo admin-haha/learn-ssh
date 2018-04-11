@@ -14,8 +14,8 @@
 </head>
 <body class="easyui-layout">
 	<div class="main-add">
-		<div class="row-div">
-			<h4 style="display: inline-block;margin-top: 10px;">添加权限</h4>
+		<div class="row-div bg-red">
+			<h3>添加权限</h3>
 		</div>
 		<div class="row-div">
 			<div class="row-left"></div>
@@ -37,8 +37,8 @@
 			<div class="row-left"></div>
 			<div class="row-right"></div>
 		</div>
-		<div class="row-div">
-			<button style="width: 50%;border-radius: 20px;height: 30px;">提交</button>
+		<div class="bottom-div">
+			<button class="button-blue" >提交</button>
 		</div>
 	</div>
 

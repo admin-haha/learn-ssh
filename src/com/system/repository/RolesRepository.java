@@ -54,4 +54,10 @@ public class RolesRepository extends BaseRepository<Roles> {
 		return null;
 	}
 
+	@Override
+	public Roles queryById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

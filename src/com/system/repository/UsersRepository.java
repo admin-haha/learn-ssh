@@ -79,4 +79,31 @@ public class UsersRepository extends BaseRepository<Users> {
 		jdbcTemplate.execute(sql.toString());
 	}
 
+
+	@Override
+	public Users queryById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Users queryByAccountAndPassword(String account,String password) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from users where account = '");
+		sql.append(account).append("' and password = '");
+		sql.append(password).append("' ");
+		logger.info("【人员】查询人员数据的sql为:"+sql.toString());
+		try {
+			return jdbcTemplate.queryForObject(sql.toString(), new RowMapper<Users>() {
+
+				@Override
+				public Users mapRow(ResultSet arg0, int arg1) throws SQLException {
+					// TODO Auto-generated method stub
+					return null;
+				}
+			});
+		}catch(Exception e) {
+			logger.error("【人员】查询人员信息出错："+e.getMessage(),e);
+			return null;
+		}
+	}
 }

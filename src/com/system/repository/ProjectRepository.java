@@ -67,4 +67,10 @@ public class ProjectRepository extends BaseRepository<Project> {
 		return null;
 	}
 
+	@Override
+	public Project queryById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

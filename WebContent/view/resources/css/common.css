@@ -2,12 +2,19 @@
 *{
 	margin: 0px;
 	padding: 0px;
+	font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif,"SimSun"; 
 }
 .main-add{
 	  box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 40px;
-	  width: 350px;background-color: red;height: 400px;margin: auto;
+	  width: 400px;
+	  background-color: #e6e6e6;
+	  height: 420px;
+	  margin:auto;
+	  margin-top: 20px;
+	  position: relative;
+	  padding-top: 10px;
 }
-.main-add,.row-left,.row-right{
+.main-add{
 	border-radius: 20px;
 }
 .row-div{
@@ -15,9 +22,18 @@
 	width: 350px;
 	margin: 0 auto;
 	text-align: center;
+	border-bottom: 1px solid;
+	border-bottom-color:#808080;
 }
-.row-left{background-color: blue;width: 28%;}
-.row-right{background-color: green;width: 60%;}
+.bottom-div{
+	height: 40px;
+	width: 100%;
+	text-align: center;
+	position:absolute;
+	bottom:40px;
+}
+.row-left{background-color: #e6e6e6;width: 28%;border-right: 1px outset;boborder-right-color:#808080 ;}
+.row-right{background-color: #e6e6e6;width: 60%;}
 .row-left,.row-right{
 	margin:5px 10px;
 	height:30px;
@@ -26,8 +42,19 @@
 	flex-flow: row wrap;
 	float: left;
 }
-.button-blue:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(49, 176, 213);
-    border-color: rgb(38, 154, 188);
+.bg-red{
+	background-color: #f39800;
+	color: #fff;
+	line-height:30px;
+	position:relative;
+	margin-bottom: 10px;
+}
+.button-blue {
+	display:inline-block;
+    color: #fff;
+    background-color:#3a84cf;
+    margin: 0 auto;
+    width: 90%;
+    height: 40px;
+    font-size: 20px;
 }

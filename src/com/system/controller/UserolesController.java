@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/useroles")
 public class UserolesController {
 
 	@RequestMapping(value="/list",method=RequestMethod.GET)

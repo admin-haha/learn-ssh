@@ -59,4 +59,10 @@ public class FunctionRepository extends BaseRepository<Function> {
 		return null;
 	}
 
+	@Override
+	public Function queryById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

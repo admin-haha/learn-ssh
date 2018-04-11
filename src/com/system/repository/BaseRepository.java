@@ -24,6 +24,8 @@ public abstract class BaseRepository<T> {
 	
 	public abstract void delete(T vo);
 	
+	public abstract T queryById(String id);
+	
 	public abstract List<BasePo> queryForList(ParamsVo vo);
 	
 	

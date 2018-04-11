@@ -54,4 +54,10 @@ public class DepartmentRepository extends BaseRepository<Department> {
 		return null;
 	}
 
+	@Override
+	public Department queryById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

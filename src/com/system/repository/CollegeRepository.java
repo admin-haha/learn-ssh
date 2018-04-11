@@ -53,4 +53,10 @@ public class CollegeRepository extends BaseRepository<College> {
 		return null;
 	}
 
+	@Override
+	public College queryById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

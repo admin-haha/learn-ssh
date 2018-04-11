@@ -14,9 +14,8 @@
 </head>
 <body class="easyui-layout">
 	<div class="main-add">
-		<div class="row-div">
-			<div class="row-left"></div>
-			<div class="row-right"></div>
+		<div class="row-div bg-red">
+			<h3>添加人员</h3>
 		</div>
 		<div class="row-div">
 			<div class="row-left"></div>
@@ -35,7 +34,11 @@
 			<div class="row-right"></div>
 		</div>
 		<div class="row-div">
-			<button class="button-blue" style="width: 50%;border-radius: 20px;height: 30px;">提交</button>
+			<div class="row-left"></div>
+			<div class="row-right"></div>
+		</div>
+		<div class="bottom-div">
+			<button class="button-blue" >提交</button>
 		</div>
 	</div>
 

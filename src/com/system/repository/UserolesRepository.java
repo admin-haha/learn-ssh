@@ -61,4 +61,10 @@ public class UserolesRepository extends BaseRepository<Useroles> {
 		return null;
 	}
 
+	@Override
+	public Useroles queryById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

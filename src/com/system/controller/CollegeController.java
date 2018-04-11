@@ -12,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CollegeController {
 
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public String queryAllColleges(HttpServletRequest request,HttpServletResponse response) {
+	public String toAueryPage(HttpServletRequest request,HttpServletResponse response) {
 		
 		return "/college/list";
+	}
+	
+	@RequestMapping(value="/query",method=RequestMethod.GET)
+	public void queryAllColleges(HttpServletRequest request,HttpServletResponse response) {
+		
 	}
 	
 	@RequestMapping(value="/add",method=RequestMethod.GET)

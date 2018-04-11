@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加角色</title>
+<title>修改科系</title>
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <link type="text/css" rel="stylesheet" href="/css/common.css" />
@@ -15,7 +15,7 @@
 <body class="easyui-layout">
 	<div class="main-add">
 		<div class="row-div bg-red">
-			<h3>添加角色</h3>
+			<h3>修改科系</h3>
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>角色名称</label></div>
@@ -23,10 +23,10 @@
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>角色描述</label></div>
-			<div class="row-right"><textarea cols="30" rows="3" id="memo" draggable="false"></textarea></div>
+			<div class="row-right"><textarea cols="30" rows="3" id="memo"></textarea></div>
 		</div>
 		<div class="bottom-div">
-			<button class="button-blue" id= "save">提交</button>
+			<button class="button-blue" id= "save" >提交</button>
 		</div>
 	</div>
 <script type="text/javascript">

@@ -15,11 +15,11 @@ public class Users extends BasePo {
 	
 	private String collegeId; //所属学院
 	
-	private String DepartmentId; //所属专业
+	private String departmentId; //所属专业
 	
-	private String Account; //登陆账号
+	private String account; //登陆账号
 	
-	private String Password; //登陆密码
+	private String password; //登陆密码
 	
 	private String mobile; //联系电话
 
@@ -47,29 +47,29 @@ public class Users extends BasePo {
 	public void setCollegeId(String collegeId) {
 		this.collegeId = collegeId;
 	}
-
+	
 	public String getDepartmentId() {
-		return DepartmentId;
+		return departmentId;
 	}
 
 	public void setDepartmentId(String departmentId) {
-		DepartmentId = departmentId;
+		this.departmentId = departmentId;
 	}
 
 	public String getAccount() {
-		return Account;
+		return account;
 	}
 
 	public void setAccount(String account) {
-		Account = account;
+		this.account = account;
 	}
 
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 
 	public void setPassword(String password) {
-		Password = password;
+		this.password = password;
 	}
 
 	public String getMobile() {
