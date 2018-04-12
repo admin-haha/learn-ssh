@@ -54,14 +54,4 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping(value="/chooseProject",method=RequestMethod.GET)
-	public String toChooseProject(HttpServletRequest request,HttpServletResponse response) {
-		
-		return "/user/choose-project";
-	}
-	
-	@RequestMapping(value="/chooseProject",method=RequestMethod.POST)
-	public void chooseProject(HttpServletRequest request,HttpServletResponse response) {
-		
-	}
 }

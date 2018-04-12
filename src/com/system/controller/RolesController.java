@@ -62,8 +62,8 @@ public class RolesController {
 		
 	}
 	
-	@RequestMapping(value="/assignFunction",method=RequestMethod.POST)
-	public void assignFunction(HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping(value="/assignRole",method=RequestMethod.POST)
+	public void assignRole(HttpServletRequest request,HttpServletResponse response) {
 	
 		
 	}

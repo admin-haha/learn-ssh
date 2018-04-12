@@ -6,11 +6,7 @@ $( function() {
 var menu = [];
 $( function() {
 	$.ajaxSettings.async = false;
-	$.getJSON('/function/list', {
-		type :"1",
-		parentId :"-1",
-		c :Math.round(Math.random() * 10000)
-	}, function(data) {
+	$.getJSON('/function/rootFunction',{}, function(data) {
 		if (data) {
 			menu = data.rows;
 		}
