@@ -8,6 +8,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.system.po.Users;
+
 @Controller
 public class LoginController {
 
@@ -35,6 +37,12 @@ public class LoginController {
 			final ModelMap context, final Integer ownerId, final String account,
 			final String password, final String loginUrl, final String yanZhengMa,final String tenantCode) {
 
+		//校验人员
+		//Users vo = 
+		//人员角色
+		
+		//人员权限
+		
 		return "redirect:/index";
 
 	}
