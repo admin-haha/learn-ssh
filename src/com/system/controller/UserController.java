@@ -12,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UserController {
 
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public String queryAllUsers(HttpServletRequest request,HttpServletResponse response) {
+	public String toQueryPage(HttpServletRequest request,HttpServletResponse response) {
 		
 		return "/user/list";
+	}
+	
+	@RequestMapping(value="/query",method=RequestMethod.GET)
+	public void queryAllUsers(HttpServletRequest request,HttpServletResponse response) {
+		
 	}
 	
 	@RequestMapping(value="/add",method=RequestMethod.GET)

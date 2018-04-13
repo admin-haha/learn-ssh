@@ -59,4 +59,13 @@ public class CollegeRepository extends BaseRepository<College> {
 		return null;
 	}
 
+	public List<String> queryAllCollege(){
+		String sql = "select json_object('id',id,'text',name) from college ";
+		logger.info("【学院】获取学院的sql为:"+sql);
+		try {
+			return jdbcTemplate.queryForList(sql, String.class);
+		}catch(Exception e) {
+			return null;
+		}
+	}
 }

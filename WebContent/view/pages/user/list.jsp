@@ -22,7 +22,14 @@
 				<tr>
 					<td width="40%">
 						<label>学院选择：</label>
-	                       	<input id="college" >
+	                       	<input id="college" class="easyui-combobox" data-options="
+				                    url:'/college/queryAllCollege',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'text',
+				                    multiple:true,
+				                    panelHeight:'auto'
+				                    ">
 					</td>
 					<td width="40%">
 						<label>科系选择：</label>
