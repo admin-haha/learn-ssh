@@ -65,16 +65,26 @@ public class FunctionRepository extends BaseRepository<Function> {
 		return null;
 	}
 
-	public String queryRootFunction() {
+	public List<String> queryRootFunction() {
 		String sql = "select "
-				+ "json_object('total',count(1),'rows',json_array(group_concat(json_object('functionId',func_id,'parentId',parent_id,'funcname',name,'detailinfo',func_url,'funcorder',func_order))))"
+				+ "json_object('functionId',func_id,'parentId',parent_id,'funcname',name,'detailinfo',func_url,'funcorder',func_order)"
 				+ " from function where parent_id = '-1' order by func_order asc";
 		logger.info("【权限】获取父权限的sql为:"+sql);
 		try {
-			return jdbcTemplate.queryForObject(sql, String.class);
+			return jdbcTemplate.queryForList(sql, String.class);
 		}catch(Exception e) {
-			return "";
+			return null;
 		}
 		
+	}
+	
+	public List<String> querySubFunction(String parentId) {
+		String sql = "select json_object('id',func_id,'iconCls','null','parentId',parent_id,'text',concat('<a href=\\\"javascript:addTab(\\\'',name,'\\\',\\\'',func_url,'\\\',\\\'',func_id,'\\\');\\\">',name,'</a>')) from function where parent_id = '"+parentId+"' order by func_order asc";
+		logger.info("【权限】获取父权限的sql为:"+sql);
+		try {
+			return jdbcTemplate.queryForList(sql, String.class);
+		}catch(Exception e) {
+			return null;
+		}
 	}
 }

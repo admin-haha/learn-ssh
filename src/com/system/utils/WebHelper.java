@@ -137,11 +137,12 @@ public class WebHelper {
 
 	public static void sendData(final HttpServletResponse response, final String data) {
 		try {
+			logger.info("返回数据："+data);
 			response.setContentType("text/html; charset=utf-8");
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().print(data);
 		} catch (final Exception e) {
-			WebHelper.logger.error("Error occurred.", e);
+			logger.error("Error occurred.", e);
 		} finally {
 			try {
 				response.getWriter().close();

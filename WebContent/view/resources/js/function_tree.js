@@ -34,7 +34,8 @@ function loadsubFunction(funcid, parentid) {
 	$('#subFunc' + funcid).tree(
 			{
 				checkbox :false,
-				url :'/function/list?type=2&parentId=' + funcid
+				method:'GET',
+				url :'/function/subFunction?parentId=' + funcid
 						+ '&c=' + Math.round(Math.random() * 10000) + '',
 				onClick : function(node) {
 					$(this).tree('toggle', node.target);

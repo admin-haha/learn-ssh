@@ -3,20 +3,24 @@ package com.system.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.system.repository.FunctionRepository;
+import com.system.service.FunctionService;
 import com.system.utils.WebHelper;
 
 @Controller
 @RequestMapping("/function")
 public class FunctionController {
 
+	private Logger logger = LoggerFactory.getLogger(FunctionController.class);
 	@Autowired
-	private FunctionRepository functionRepository;
+	private FunctionService functionService;
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String queryAllFunctions(HttpServletRequest request,HttpServletResponse response) {
@@ -63,14 +67,13 @@ public class FunctionController {
 
 	@RequestMapping(value="/rootFunction",method=RequestMethod.GET)
 	public void queryRootFUnction(HttpServletResponse response) {
-		/**
-		 * {
-  "rows": [
-    "{\"funcname\": \"人员管理\", \"parentId\": \"-1\", \"funcorder\": 1, \"detailinfo\": \"#\", \"functionId\": \"e1d3d01925694787ae537a5fffd05bdc\"},{\"funcname\": \"角色管理\", \"parentId\": \"-1\", \"funcorder\": 2, \"detailinfo\": \"#\", \"functionId\": \"2f160d292c6148e4ad6d432d3a654838\"},{\"funcname\": \"权限管理\", \"parentId\": \"-1\", \"funcorder\": 3, \"detailinfo\": \"#\", \"functionId\": \"c885fce9558e4a3e9678349d40a51ef2\"},{\"funcname\": \"题目管理\", \"parentId\": \"-1\", \"funcorder\": 4, \"detailinfo\": \"#\", \"functionId\": \"00b2f69f50e540728dfb2de9891d715d\"}"
-  ],
-  "total": 4
-}
-		 */
-		WebHelper.sendData(response, functionRepository.queryRootFunction());
+		String result = functionService.queryRootFunction();
+		WebHelper.sendData(response, result);
+	}
+	
+	@RequestMapping(value="/subFunction",method=RequestMethod.GET)
+	public void querySubFUnction(HttpServletResponse response,HttpServletRequest request,String parentId) {
+		String result = functionService.querySubFunction(parentId);
+		WebHelper.sendData(response, result);
 	}
 }
