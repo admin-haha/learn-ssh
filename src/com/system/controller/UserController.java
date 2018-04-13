@@ -50,7 +50,6 @@ public class UserController {
 	@RequestMapping(value="/update",method=RequestMethod.PUT)
 	public void updateUser(HttpServletRequest request,HttpServletResponse response) {
 	
-		
 	}
 	
 	@RequestMapping(value="/assignRole",method=RequestMethod.POST)
