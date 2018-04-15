@@ -1,7 +1,10 @@
 package com.system.utils;
 
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.TypeAdapterFactory;
@@ -36,5 +39,17 @@ public class GsonUtils {
             parser = getJsonParser();
         }
     	return parser.parse(jsonStr).getAsJsonObject();
+    }
+    
+    public static JsonArray list2JsonArray(List<String> datas) {
+    	JsonArray array = new JsonArray();
+		if(datas!=null&&datas.size()>0) {
+			
+			for(String item:datas) {
+				array.add(GsonUtils.parseString2JsonObject(item));
+			}
+		}
+		return array;
+    	
     }
 }

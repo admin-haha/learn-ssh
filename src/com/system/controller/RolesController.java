@@ -7,12 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.system.po.Roles;
-import com.system.repository.RolesRepository;
+import com.system.service.RolesService;
+import com.system.utils.WebHelper;
+import com.system.vo.ParamsVo;
 
 @Controller
 @RequestMapping("/role")
@@ -20,12 +24,18 @@ public class RolesController {
 
 	Logger logger = LoggerFactory.getLogger(RolesController.class);
 	@Autowired
-	RolesRepository rolesRepository;
+	private RolesService rolesService;
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String queryAllRoles(HttpServletRequest request,HttpServletResponse response) {
 		
 		return "/role/list";
+	}
+	
+	@RequestMapping(value="/manage",method=RequestMethod.GET)
+	public String toManagePage(HttpServletRequest request,HttpServletResponse response) {
+		
+		return "/role/manage";
 	}
 	
 	@RequestMapping(value="/add",method=RequestMethod.GET)
@@ -35,9 +45,18 @@ public class RolesController {
 		return "/role/add";
 	}
 	
-	@RequestMapping(value="/update",method=RequestMethod.GET)
-	public String toUpdateRole(HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping(value="/query",method=RequestMethod.POST)
+	public void queryAllRoles(HttpServletRequest request,HttpServletResponse response,String name,int rows,int page) throws Exception {
+		ParamsVo paramVo = new ParamsVo();
+		paramVo.setName(name);
+		paramVo.setPage(page);
+		paramVo.setRows(rows);
+		WebHelper.sendData(response, rolesService.queryRolesByParamsVo(paramVo));
+	}
 	
+	@RequestMapping(value="/update",method=RequestMethod.GET)
+	public String toUpdateRole(HttpServletRequest request,HttpServletResponse response,String id,ModelMap content) {
+		content.addAttribute("role", rolesService.queryById(id));
 		return "/role/update";
 	}
 	
@@ -47,19 +66,25 @@ public class RolesController {
 		return "/role/assign-role";
 	}
 	
+	@RequestMapping(value="/delete",method=RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteCollege(HttpServletRequest request,HttpServletResponse response,@RequestBody Roles roles) {
+		rolesService.delete(roles);
+		return "{'flag':'0','msg':'删除成功'}";
+	}
+	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public void saveRole(HttpServletRequest request,HttpServletResponse response,String name,String memo,@RequestBody Roles vo) {
-		Roles role = new Roles();
-		role.setName(name);
-		role.setMemo(memo);
-		rolesRepository.save(vo);
-		
+	@ResponseBody
+	public String saveRole(HttpServletRequest request,HttpServletResponse response,@RequestBody Roles vo) {
+		rolesService.save(vo);
+		return "{'flag':'0','msg':'新增成功'}";
 	}
 	
 	@RequestMapping(value="/update",method=RequestMethod.PUT)
-	public void updateRole(HttpServletRequest request,HttpServletResponse response) {
-	
-		
+	@ResponseBody
+	public String updateRole(HttpServletRequest request,HttpServletResponse response,@RequestBody Roles roles) {
+		rolesService.update(roles);
+		return "{'flag':'0','msg':'修改成功'}";
 	}
 	
 	@RequestMapping(value="/assignRole",method=RequestMethod.POST)

@@ -28,5 +28,4 @@ public abstract class BaseRepository<T> {
 	
 	public abstract List<BasePo> queryForList(ParamsVo vo);
 	
-	
 }

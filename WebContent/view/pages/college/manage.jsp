@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>角色列表</title>
+<title>学院列表</title>
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
@@ -18,11 +18,12 @@
 	<table width="98%">
 				<tr>
 					<td width="30%">
-						<label>角色名称：</label>
+						<label>学院名称：</label>
 	                       	<input id="name" class="easyui-textbox" >
 					</td>
 					<td width="30%">
 						<button class="easyui-linkbutton" style="width: 130px;" type="button" id="query" data-options="iconCls:'icon-ok'">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
+						<button class="easyui-linkbutton" style="width: 130px;" type="button" id="add" data-options="iconCls:'icon-add'">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
 					</td> 
 					<td width="40%">
 					</td>
@@ -42,7 +43,7 @@
 var loadData = function(){
 	$('#detail').datagrid({
 		height: $(window).height()  - 30,
-		url: '/role/query' ,
+		url: '/college/query' ,
 		queryParams:{name:$('#name').val()},
 		method:'POST',
 		pageNumber: 1,
@@ -54,18 +55,27 @@ var loadData = function(){
         singleSelect:true,//单行选取
         pagination:true,//显示分页
 	    columns:[[
-	        {field:'text', title:'角色名称', width: '15%',halign: 'center',align:'center'},
-	        {field:'memo', title:'角色描述', width: '25%',halign: 'center',align:'center'},
-	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
-	        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'},
-	        {field:'assignCount', title:'分配人数', width: '5%',halign: 'center',align:'center'}
-	    ]],
+	        {field:'text', title:'学院名称', width: '34%',halign: 'center',align:'center',rowspan:2},
+	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center',rowspan:2},
+	        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center',rowspan:2},
+	        {field:'opt', title:'操作', width: '26%',colspan:2,halign: 'center',align:'center',rowspan:1}
+	       
+	    ],[ 
+		    	{field:'update', title:'修改', width: '13%',halign: 'center',align:'center',rowspan:1,formatter:function(val,rec){
+			    		var id = rec.id;
+			    		return '<a href="javascript:update(\''+id+'\');">修改</a>';
+		    }},
+		    {field:'delete', title:'删除', width: '13%',halign: 'center',align:'center',rowspan:1,formatter:function(val,rec){
+					var id = rec.id;
+					return '<a href="javascript:deleteRecord(\''+id+'\');">删除</a>';
+			}}
+		 ]],
 	  
 	    onLoadSuccess: function (data) {
 	    	$("#noResultMsg").remove();
         	var rowArray = $('#detail').datagrid('getRows');               
               if(rowArray.length==0){
-               var msg = $("<div id ='noResultMsg' style='display:none;text-align:center;padding:10px;border:1px solid #AAAAA;background-color:yellow;  margin-top:20px;'>您当前的选择，无返回信息，请重新调整条件!</div>"); 
+               var msg = $("<div id ='noResultMsg' style='display:none;text-align:center;padding:10px;border:1px solid #AAAAA;background-color:yellow;  margin-top:40px;'>您当前的选择，无返回信息，请重新调整条件!</div>"); 
                   msg.insertAfter($('#detail')); 
                   msg.show(200); 
               }  
@@ -73,8 +83,33 @@ var loadData = function(){
 	});
 }
 
+var update = function(id){
+	myOpen('/college/update?id='+id,500,500);
+}
+
+var deleteRecord = function(id){
+	$.ajax({
+		url:"/college/delete",
+		async:false,
+		type:"DELETE",
+		contentType : 'application/json',
+		data:JSON.stringify({"id":id}),
+		success:function(data){
+			msg = eval('(' + data + ')');
+			$.messager.alert('提示',msg.msg,'info',function(){
+				if('0'==msg.flag){
+					loadData();
+				}
+			});
+		}
+	});
+}
+
 $('#query').on('click',loadData);
 
+$('#add').on('click',function(){
+	myOpen('/college/add',500,500);
+});
 </script>
 </body>
 </html>

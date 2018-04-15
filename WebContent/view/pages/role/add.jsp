@@ -33,14 +33,25 @@
 		
 		
 		var save = function(){
+			var name = $('#name').val();
+			if(!name||''==name||'undefined'==name){
+				$.messager.alert('提示','请输入角色名称','warn');
+				return ;
+			}
 			$.ajax({
 				url:"/role/save",
 				async:false,
 				type:"POST",
-				dataType:"json",
-				data:{"name":$('#name').val(),"memo":$('#memo').val()},
+				contentType : 'application/json',
+				data:JSON.stringify({"name":name,"memo":$('#memo').val()}),
 				success:function(data){
-					
+					msg = eval('(' + data + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							window.close();
+							window.opener.loadData();
+						}
+					});
 				}
 			});
 		}

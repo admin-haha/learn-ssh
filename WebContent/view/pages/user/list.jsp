@@ -17,7 +17,6 @@
 <div style='display:none'><span style="visibility: hidden;white-space: nowrap; font-size: 24px; " id='forStrLen'></span></div>
 <div region="north"  split="true" id="northdiv" style="height:160px;padding:10px;">
 	<fieldset>
-		<form action="/terminalMgr/web/wms/store/query.fbi" method="post" id="myForm" novalidate>
 			<table>
 				<tr>
 					<td width="40%">
@@ -68,7 +67,6 @@
 					<td width="40%"></td>
 				</tr>
 			</table>
-		</form>
 	</fieldset>
 </div>
 <div region="center" style="overflow:hidden;">

@@ -19,11 +19,14 @@
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>角色名称</label></div>
-			<div class="row-right"><input type="text" id="name" /></div>
+			<div class="row-right">
+				<input type="text" id="name" value="${role.name }"/>
+				<input type="hidden" id="id" value="${role.id }"/>
+			</div>
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>角色描述</label></div>
-			<div class="row-right"><textarea cols="30" rows="3" id="memo"></textarea></div>
+			<div class="row-right"><textarea cols="30" rows="3" id="memo" >${role.memo }</textarea></div>
 		</div>
 		<div class="bottom-div">
 			<button class="button-blue" id= "save" >提交</button>
@@ -33,14 +36,25 @@
 		
 		
 		var save = function(){
+			var name = $('#name').val();
+			if(!name||''==name||'undefined'==name){
+				$.messager.alert('提示','请输入角色名称','warn');
+				return ;
+			}
 			$.ajax({
-				url:"/role/save",
+				url:"/role/update",
 				async:false,
-				type:"POST",
-				dataType:"json",
-				data:{"name":$('#name').val(),"memo":$('#memo').val()},
-				success:function(data){
-					
+				type:'PUT',
+				contentType : 'application/json',
+				data:JSON.stringify({"id":$('#id').val(),"name":name,"memo":$('#memo').val()}),
+				success:function(msg){
+					msg = eval('(' + msg + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							window.close();
+							window.opener.loadData();
+						}
+					});
 				}
 			});
 		}

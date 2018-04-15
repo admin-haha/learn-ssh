@@ -8,14 +8,28 @@
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="/js/utils.js" ></script>
 <script type="text/javascript" src="/jquery-easyui/jquery.easyui.min.js" ></script>
 <script type="text/javascript" src="/jquery-easyui/locale/easyui-lang-zh_CN.js" ></script>
 </head>
 <body class="easyui-layout">
 <div style='display:none'><span style="visibility: hidden;white-space: nowrap; font-size: 24px; " id='forStrLen'></span></div>
-<div region="north"  split="true" id="northdiv" style="height:140px;padding:10px;">
-
-	<button id="query">查询</button>
+<div region="north"  split="true" id="northdiv" style="height:70px;padding:10px;">
+	<table width="98%">
+				<tr>
+					<td width="30%">
+						<label>学院名称：</label>
+	                       	<input id="name" class="easyui-textbox" >
+					</td>
+					<td width="30%">
+						<button class="easyui-linkbutton" style="width: 130px;" type="button" id="query" data-options="iconCls:'icon-ok'">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
+					</td> 
+					<td width="40%">
+					</td>
+				</tr>
+			
+				
+			</table>
 </div>
 <div region="center" style="overflow:hidden;">
   <div id="tabSearchResult"  class="easyui-tabs" fit="true" border="false">
@@ -29,35 +43,21 @@ var loadData = function(){
 	$('#detail').datagrid({
 		height: $(window).height()  - 30,
 		url: '/college/query' ,
-		method:'GET',
+		queryParams:{name:$('#name').val()},
+		method:'POST',
 		pageNumber: 1,
         pageSize:20,
 		fit: true,//自动大小
-		nowrap:false, //换行
-        rownumbers:false,//行号
+		nowrap:true, //换行
+        rownumbers:true,//行号
         striped: true,
         singleSelect:true,//单行选取
         pagination:true,//显示分页
-       /*  toolbar: [{
-            text:'导出',
-            iconCls:'icon-save',
-            handler:function(){
-            	$.messager.confirm('确认', '确认导出？', function(r){
-    				if (r){
-    					window.location.href = '/terminalMgr/web/wms/store/realTimeExport.fbi?' + params;
-    				}
-    			});
-            }
-        }], */
 	    columns:[[
-	        {field:'index', title:' ', width: '5%', align: 'center', halign: 'center',style:'color:red'},
-	        {field:'prodname', title:'产品名称', width: '12%',halign: 'center',sortable:'true',
-	        	styler: function(value,row,index){
-					if (index==0){
-						return 'text-align:center;';
-					}
-				}
-	        }
+	        {field:'text', title:'学院名称', width: '34%',halign: 'center',align:'center'},
+	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
+	        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'}
+	       
 	    ]],
 	  
 	    onLoadSuccess: function (data) {
@@ -73,6 +73,7 @@ var loadData = function(){
 }
 
 $('#query').on('click',loadData);
+
 </script>
 </body>
 </html>

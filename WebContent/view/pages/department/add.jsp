@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加学院</title>
+<title>添加科系</title>
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <link type="text/css" rel="stylesheet" href="/css/common.css" />
@@ -15,15 +15,24 @@
 <body class="easyui-layout">
 	<div class="main-add">
 		<div class="row-div bg-red">
-			<h3>添加学院</h3>
+			<h3>添加科系</h3>
 		</div>
 		<div class="row-div">
-			<div class="row-left"><label>角色名称</label></div>
+			<div class="row-left"><label>科系名称</label></div>
 			<div class="row-right"><input type="text" id="name" /></div>
 		</div>
 		<div class="row-div">
-			<div class="row-left"><label>角色描述</label></div>
-			<div class="row-right"><textarea cols="3" rows="20" id="memo"></textarea></div>
+			<div class="row-left"><label>所属学院</label></div>
+			<div class="row-right">
+			<input id="college" class="easyui-combobox" data-options="
+				                    url:'/college/queryAllCollege',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'text',
+				                    multiple:false,
+				                    panelHeight:'auto'
+				                    ">
+			</div>
 		</div>
 		<div class="bottom-div">
 			<button class="button-blue" id= "save" >提交</button>
@@ -33,14 +42,30 @@
 		
 		
 		var save = function(){
+			var name = $('#name').val();
+			var college = $('#college').val();
+			if(!name||''==name||'undefined'==name){
+				$.messager.alert('提示','请输入学院名称','warn');
+				return ;
+			}
+			if(!college||''==college||'undefined'==college){
+				$.messager.alert('提示','请选择所属学院','warn');
+				return ;
+			}
 			$.ajax({
-				url:"/role/save",
+				url:"/department/save",
 				async:false,
 				type:"POST",
-				dataType:"json",
-				data:{"name":$('#name').val(),"memo":$('#memo').val()},
+				contentType : 'application/json',
+				data:JSON.stringify({"name":$('#name').val(),"collegeId":$('#college').val()}),
 				success:function(data){
-					
+					msg = eval('(' + data + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							window.close();
+							window.opener.loadData();
+						}
+					});
 				}
 			});
 		}

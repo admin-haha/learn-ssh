@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.system.po.BasePo;
 import com.system.po.College;
+import com.system.utils.GsonUtils;
 import com.system.vo.ParamsVo;
 
 @Repository
@@ -55,8 +56,10 @@ public class CollegeRepository extends BaseRepository<College> {
 
 	@Override
 	public College queryById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select json_object('id',id,'name',name) from college where id = '"+id+"' ";
+		logger.info("【学院】获取学院的sql为:"+sql); 
+		String result = jdbcTemplate.queryForObject(sql, String.class);
+		return GsonUtils.getGson().fromJson(result, College.class);
 	}
 
 	public List<String> queryAllCollege(){
@@ -68,4 +71,14 @@ public class CollegeRepository extends BaseRepository<College> {
 			return null;
 		}
 	}
+	
+	public List<String> queryBySql(String sql){
+		logger.info("【学院】获取学院的sql为:"+sql);
+		try {
+			return jdbcTemplate.queryForList(sql, String.class);
+		}catch(Exception e) {
+			return null;
+		}
+	}
+	
 }

@@ -151,5 +151,19 @@ public class WebHelper {
 		}
 	}
 
-
+	public static void sendJsonData(final HttpServletResponse response, final String data) {
+		try {
+			logger.info("返回数据："+data);
+			response.setContentType("application/json; charset=utf-8");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().print(data);
+		} catch (final Exception e) {
+			logger.error("Error occurred.", e);
+		} finally {
+			try {
+				response.getWriter().close();
+			} catch (final IOException e) {
+			}
+		}
+	}
 }
