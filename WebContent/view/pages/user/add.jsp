@@ -23,7 +23,10 @@
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>性别</label></div>
-			<div class="row-right"><label>角色名称</label></div>
+			<div class="row-right">
+					<input type="radio" style="margin-top: 8px;" name="gender" value="0" checked/>&nbsp;男&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" style="margin-top: 8px;" name="gender" value="1" />&nbsp;女
+			</div>
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>所属学院</label></div>
@@ -33,7 +36,7 @@
 				                    method:'get',
 				                    valueField:'id',
 				                    textField:'text',
-				                    multiple:true,
+				                    multiple:false,
 				                    panelHeight:'auto',
 				                    onChange:function(newValue,oldValue){
 				                    	$('#department').combobox('reload','/department/queryAllDepartment?collegeIds='+newValue);
@@ -51,7 +54,7 @@
 						                    method:'get',
 						                    valueField:'id',
 						                    textField:'text',
-						                    multiple:true,
+						                    multiple:false,
 						                    panelHeight:'auto'">
 			</div>
 		</div>
