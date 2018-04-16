@@ -23,6 +23,8 @@ public class ParamsVo implements Serializable {
 	private String name;
 	
 	private String collegeIds;
+	
+	private String departmentIds;
 
 	public Integer getPage() {
 		return page;
@@ -75,6 +77,17 @@ public class ParamsVo implements Serializable {
 
 	public void setCollegeIds(String collegeIds) {
 		this.collegeIds = collegeIds;
+	}
+
+	public String getDepartmentIds() {
+		if(StringUtils.isNotBlank(collegeIds)) {
+			return "'"+StringUtils.join(StringUtils.split(departmentIds,","),"','")+"'";
+		}
+		return departmentIds;
+	}
+
+	public void setDepartmentIds(String departmentIds) {
+		this.departmentIds = departmentIds;
 	}
 	
 	

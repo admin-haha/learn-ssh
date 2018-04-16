@@ -106,17 +106,21 @@ var update = function(id){
 }
 
 var deleteRecord = function(id){
-	$.ajax({
-		url:"/department/delete",
-		async:false,
-		type:"DELETE",
-		contentType : 'application/json',
-		data:JSON.stringify({"id":id}),
-		success:function(data){
-			msg = eval('(' + data + ')');
-			$.messager.alert('提示',msg.msg,'info',function(){
-				if('0'==msg.flag){
-					loadData();
+	$.messager.confirm('警告','你正在进行删除操作，是否继续？',function(r){
+		if(r){
+			$.ajax({
+				url:"/department/delete",
+				async:false,
+				type:"DELETE",
+				contentType : 'application/json',
+				data:JSON.stringify({"id":id}),
+				success:function(data){
+					msg = eval('(' + data + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							loadData();
+						}
+					});
 				}
 			});
 		}

@@ -29,7 +29,7 @@ public class DepartmentService {
 	 * @return
 	 */
 	public String queryAllDepartment(String collegeIds) {
-		collegeIds = StringUtils.join(StringUtils.split(collegeIds),"','");
+		collegeIds = StringUtils.join(StringUtils.split(collegeIds,","),"','");
 		List<String> datas = departmentRepository.queryAllDepartment("'"+collegeIds+"'");
 		return GsonUtils.list2JsonArray(datas).toString();
 	}
@@ -58,7 +58,7 @@ public class DepartmentService {
 		int count = commonRepository.count(sql);
 		result.addProperty("total", count);
 		sql = sql +"limit "+paramsVo.getOffset()+","+paramsVo.getRows();
-		result.add("rows", GsonUtils.list2JsonArray(departmentRepository.queryBySql(sql)));
+		result.add("rows", GsonUtils.list2JsonArray(commonRepository.queryBySql(sql)));
 		return result.toString();
 	}
 }

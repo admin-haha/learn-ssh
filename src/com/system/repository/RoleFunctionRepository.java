@@ -27,6 +27,15 @@ public class RoleFunctionRepository extends BaseRepository<RoleFunction> {
 		jdbcTemplate.execute(sql.toString());
 		
 	}
+	
+	public String generalSaveSql(RoleFunction vo) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("insert into rolefunction(func_id,role_id) ");
+		sql.append(" values (");
+		sql.append("'").append(vo.getFuncId()).append("',");
+		sql.append("'").append(vo.getRoleId()).append("')");
+		return sql.toString();
+	}
 
 	@Override
 	public void update(RoleFunction vo) {

@@ -52,7 +52,7 @@ public class CollegeService {
 		int count = commonRepository.count(sql);
 		result.addProperty("total", count);
 		sql = sql +"limit "+paramsVo.getOffset()+","+paramsVo.getRows();
-		result.add("rows", GsonUtils.list2JsonArray(collegeRepository.queryBySql(sql)));
+		result.add("rows", GsonUtils.list2JsonArray(commonRepository.queryBySql(sql)));
 		return result.toString();
 	}
 }

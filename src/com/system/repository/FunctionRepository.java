@@ -64,7 +64,30 @@ public class FunctionRepository extends BaseRepository<Function> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public List<String> queryRootFunctionWithRole(String roleId) {
+		String sql = "select "
+				+ "json_object('id',f.func_id,'name',f.name,'checked',(case when rf.role_id is null then '' else 'true' end),'funcKey',f.func_key,'funcUrl',f.func_url,'funcOrder',f.func_order,'createTime',DATE_FORMAT(f.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(f.update_time,'%Y-%m-%d')) "
+				+ " from function f left join rolefunction rf on rf.func_id = f.func_id and rf.role_id = '"+roleId+"'  where parent_id = '-1' order by func_order asc";
+		logger.info("【权限】获取父权限的sql为:"+sql);
+		try {
+			return jdbcTemplate.queryForList(sql, String.class);
+		}catch(Exception e) {
+			return null;
+		}
+		
+	}
 
+	public List<String> querySubFunctionWithRole(String parentId,String roleId) {
+		String sql = "select json_object('id',f.func_id,'name',f.name,'checked',(case when rf.role_id is null then '' else 'true' end),'funcKey',f.func_key,'funcUrl',f.func_url,'funcOrder',f.func_order,'createTime',DATE_FORMAT(f.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(f.update_time,'%Y-%m-%d')) from function f left join rolefunction rf on rf.func_id = f.func_id and rf.role_id = '"+roleId+"' where f.parent_id = '"+parentId+"' order by func_order asc";
+		logger.info("【权限】获取子权限的sql为:"+sql);
+		try {
+			return jdbcTemplate.queryForList(sql, String.class);
+		}catch(Exception e) {
+			return null;
+		}
+	}
+	
 	public List<String> queryRootFunction() {
 		String sql = "select "
 				+ "json_object('functionId',func_id,'parentId',parent_id,'funcname',name,'detailinfo',func_url,'funcorder',func_order)"
@@ -80,7 +103,7 @@ public class FunctionRepository extends BaseRepository<Function> {
 	
 	public List<String> querySubFunction(String parentId) {
 		String sql = "select json_object('id',func_id,'iconCls','null','parentId',parent_id,'text',concat('<a href=\\\"javascript:addTab(\\\'',name,'\\\',\\\'',func_url,'\\\',\\\'',func_id,'\\\');\\\">',name,'</a>')) from function where parent_id = '"+parentId+"' order by func_order asc";
-		logger.info("【权限】获取父权限的sql为:"+sql);
+		logger.info("【权限】获取子权限的sql为:"+sql);
 		try {
 			return jdbcTemplate.queryForList(sql, String.class);
 		}catch(Exception e) {

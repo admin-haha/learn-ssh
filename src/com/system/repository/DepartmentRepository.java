@@ -74,13 +74,4 @@ public class DepartmentRepository extends BaseRepository<Department> {
 			return null;
 		}
 	}
-	
-	public List<String> queryBySql(String sql){
-		logger.info("【科系】获取科系的sql为:"+sql);
-		try {
-			return jdbcTemplate.queryForList(sql, String.class);
-		}catch(Exception e) {
-			return null;
-		}
-	}
 }

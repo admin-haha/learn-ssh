@@ -61,7 +61,7 @@ var loadData = function(){
 	        {field:'opt', title:'操作', width: '26%',colspan:2,halign: 'center',align:'center',rowspan:1}
 	       
 	    ],[ 
-		    	{field:'update', title:'修改', width: '13%',halign: 'center',align:'center',rowspan:1,formatter:function(val,rec){
+		    {field:'update', title:'修改', width: '13%',halign: 'center',align:'center',rowspan:1,formatter:function(val,rec){
 			    		var id = rec.id;
 			    		return '<a href="javascript:update(\''+id+'\');">修改</a>';
 		    }},
@@ -88,17 +88,21 @@ var update = function(id){
 }
 
 var deleteRecord = function(id){
-	$.ajax({
-		url:"/college/delete",
-		async:false,
-		type:"DELETE",
-		contentType : 'application/json',
-		data:JSON.stringify({"id":id}),
-		success:function(data){
-			msg = eval('(' + data + ')');
-			$.messager.alert('提示',msg.msg,'info',function(){
-				if('0'==msg.flag){
-					loadData();
+	$.messager.confirm('警告','你正在进行删除操作，是否继续？',function(r){
+		if(r){
+			$.ajax({
+				url:"/college/delete",
+				async:false,
+				type:"DELETE",
+				contentType : 'application/json',
+				data:JSON.stringify({"id":id}),
+				success:function(data){
+					msg = eval('(' + data + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							loadData();
+						}
+					});
 				}
 			});
 		}

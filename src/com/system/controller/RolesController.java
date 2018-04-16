@@ -60,12 +60,6 @@ public class RolesController {
 		return "/role/update";
 	}
 	
-	@RequestMapping(value="/assignRole",method=RequestMethod.GET)
-	public String toAssignRole(HttpServletRequest request,HttpServletResponse response) {
-	
-		return "/role/assign-role";
-	}
-	
 	@RequestMapping(value="/delete",method=RequestMethod.DELETE)
 	@ResponseBody
 	public String deleteCollege(HttpServletRequest request,HttpServletResponse response,@RequestBody Roles roles) {
@@ -85,11 +79,5 @@ public class RolesController {
 	public String updateRole(HttpServletRequest request,HttpServletResponse response,@RequestBody Roles roles) {
 		rolesService.update(roles);
 		return "{'flag':'0','msg':'修改成功'}";
-	}
-	
-	@RequestMapping(value="/assignRole",method=RequestMethod.POST)
-	public void assignRole(HttpServletRequest request,HttpServletResponse response) {
-	
-		
 	}
 }
