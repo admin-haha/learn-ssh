@@ -46,12 +46,7 @@ public class RequestHandleIntercepter extends HandlerInterceptorAdapter {
 				sb.append(",");
 			}
 		}
-		logger.info("******");
-		logger.info("*请求URL:"+url);
-		logger.info("*请求METHOD:"+method);
-		logger.info("*请求参数：");
-		logger.info("**"+sb.toString());
-		logger.info("******");
+		logger.info("\n"+"******"+"\n"+"*请求URL:"+url+"\n"+"*请求METHOD:"+method+"\n"+"*请求参数："+"\n"+"**"+sb.toString()+"\n"+"******");
 		// 如果用户已经绑定过 放行
 		return true;
 	}
