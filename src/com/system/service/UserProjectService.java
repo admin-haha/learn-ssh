@@ -2,54 +2,46 @@ package com.system.service;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import com.google.gson.JsonObject;
-import com.system.po.Users;
+import com.system.po.Project;
+import com.system.po.UserProject;
 import com.system.repository.CommonRepository;
-import com.system.repository.UsersRepository;
+import com.system.repository.ProjectRepository;
+import com.system.repository.UserProjectRepository;
 import com.system.utils.GsonUtils;
 import com.system.vo.ParamsVo;
 
 @Service
-public class UserService {
+public class UserProjectService {
 
 	@Autowired
-	private UsersRepository usersRepository;
+	private UserProjectRepository userProjectRepository;
 	@Autowired
 	private CommonRepository commonRepository;
-	
-	private ModelMap checkUserLogin(HttpServletResponse response,String account,String password,ModelMap context) {
-		Users vo = usersRepository.queryByAccountAndPassword(account, password);
-		
-		
-		return context;
-	}
 	
 	/**
 	 * 获取所有学院数据
 	 * @return
 	 */
-	public String queryAllUsers() {
+	public String queryAllProjects() {
 		List<String> datas = null;
 		return GsonUtils.list2JsonArray(datas).toString();
 	}
-	public void update(Users users) {
-		usersRepository.update(users);
+	public void update(UserProject userProject) {
+		userProjectRepository.update(userProject);
 	}
-	public void save(Users users) {
-		usersRepository.save(users);
+	public void save(UserProject userProject) {
+		userProjectRepository.save(userProject);
 	}
-	public void delete(Users users) {
-		usersRepository.delete(users);
+	public void delete(UserProject userProject) {
+		userProjectRepository.delete(userProject);
 	}
-	public Users queryById(String id) {
-		return usersRepository.queryById(id);
+	public UserProject queryById(String id) {
+		return userProjectRepository.queryById(id);
 	}
 	
 	public String queryUsersByParamsVo(ParamsVo paramsVo) {

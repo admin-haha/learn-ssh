@@ -46,7 +46,6 @@ public class FunctionController {
 	
 	@RequestMapping(value="/update",method=RequestMethod.GET)
 	public String toUpdateFunction(HttpServletRequest request,HttpServletResponse response) {
-	
 		return "/function/update";
 	}
 	

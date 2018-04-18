@@ -32,7 +32,6 @@ public class RequestHandleIntercepter extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		logger.info("进入拦截器.........");
 //		Users users = (Users) request.getSession().getAttribute(AppConstant.SESSION_USER_KEY);
-		String currentUrl = request.getServletPath();
 		String method = request.getMethod();
 		String url = request.getServletPath();
 		Enumeration<String> paramNames = request.getParameterNames();
@@ -47,6 +46,12 @@ public class RequestHandleIntercepter extends HandlerInterceptorAdapter {
 			}
 		}
 		logger.info("\n"+"******"+"\n"+"*请求URL:"+url+"\n"+"*请求METHOD:"+method+"\n"+"*请求参数："+"\n"+"**"+sb.toString()+"\n"+"******");
+		
+		if("/login".equals(url)) {
+			return true;
+		}
+		
+		
 		// 如果用户已经绑定过 放行
 		return true;
 	}

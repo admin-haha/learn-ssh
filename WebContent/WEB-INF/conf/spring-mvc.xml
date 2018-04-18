@@ -56,6 +56,7 @@
 		<!-- 用户验证控制拦截器 -->
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
+	        <mvc:exclude-mapping path="/login"/>
 	        <mvc:exclude-mapping path="/js/**"/>
 	        <mvc:exclude-mapping path="/css/**"/>
  	        <mvc:exclude-mapping path="/img/**"/>

@@ -14,9 +14,7 @@ import com.system.po.RoleFunction;
 import com.system.repository.CommonRepository;
 import com.system.repository.FunctionRepository;
 import com.system.repository.RoleFunctionRepository;
-import com.system.repository.RolesRepository;
 import com.system.utils.GsonUtils;
-import com.system.utils.StringKit;
 
 @Service
 public class FunctionService {
