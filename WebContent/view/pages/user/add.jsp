@@ -75,9 +75,36 @@
 			<div class="row-right"><input class="easyui-passwordbox" iconWidth="28" style="height:34px;padding:10px"></div>
 		</div>
 		<div class="bottom-div">
-			<button class="button-blue" >提交</button>
+			<button class="button-blue" id="save">提交</button>
 		</div>
 	</div>
-
+<script type="text/javascript">
+		
+		
+		var save = function(){
+			var name = $('#name').val();
+			if(!name||''==name||'undefined'==name){
+				$.messager.alert('提示','请输入角色名称','warn');
+				return ;
+			}
+			$.ajax({
+				url:"/role/save",
+				async:false,
+				type:"POST",
+				contentType : 'application/json',
+				data:JSON.stringify({"name":name,"memo":$('#memo').val()}),
+				success:function(data){
+					msg = eval('(' + data + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							window.close();
+							window.opener.loadData();
+						}
+					});
+				}
+			});
+		}
+		$('#save').on('click',save);
+</script>
 </body>
 </html>
