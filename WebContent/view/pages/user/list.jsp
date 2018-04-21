@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>人员管理</title>
+<title>人员列表</title>
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
@@ -14,13 +14,26 @@
 </head>
 <body class="easyui-layout">
 <div style='display:none'><span style="visibility: hidden;white-space: nowrap; font-size: 24px; " id='forStrLen'></span></div>
-<div region="north"  split="true" id="northdiv" style="height:100px;padding:10px;">
+<div region="north"  split="true" id="northdiv" style="height:120px;padding:10px;">
 	<table width="98%">
 				<tr>
 					<td width="30%">
 						<label>人员名称：</label>
 	                       	<input id="name" class="easyui-textbox" >
 					</td>
+					<td width="30%">
+						<label>人员角色：</label>
+						<input id="role" class="easyui-combobox" data-options="
+				                    url:'/role/queryAllRoles',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'text',
+				                    multiple:true,
+				                    panelHeight:'auto'
+				                    ">
+					</td>
+				</tr>
+				<tr>
 					<td width="30%">
 						<label>所属学院：</label>
 						<input id="college" class="easyui-combobox" data-options="
@@ -38,7 +51,7 @@
 				                    }
 				                    ">
 					</td> 
-					<td width="40%">
+					<td width="30%">
 					<label>所属科系：</label>
 					<input id="department" class="easyui-combobox" data-options="url:'/department/queryAllDepartment',
 						                    method:'get',
@@ -46,6 +59,8 @@
 						                    textField:'text',
 						                    multiple:true,
 						                    panelHeight:'auto'">
+					</td>
+					<td width="40%">
 					</td>
 				</tr>
 				<tr>
@@ -71,7 +86,7 @@ var loadData = function(){
 	$('#detail').datagrid({
 		height: $(window).height()  - 30,
 		url: '/user/query' ,
-		queryParams:{name:$('#name').val(),college:$('#college').val(),department:$('#department').val()},
+		queryParams:{name:$('#name').val(),college:$('#college').val(),department:$('#department').val(),"role":$('#role').val()},
 		method:'POST',
 		pageNumber: 1,
         pageSize:20,
@@ -97,11 +112,33 @@ var loadData = function(){
 	    	$("#noResultMsg").remove();
         	var rowArray = $('#detail').datagrid('getRows');               
               if(rowArray.length==0){
-               var msg = $("<div id ='noResultMsg' style='display:none;text-align:center;padding:10px;border:1px solid #AAAAA;background-color:yellow;  margin-top:20px;'>您当前的选择，无返回信息，请重新调整条件!</div>"); 
+               var msg = $("<div id ='noResultMsg' style='display:none;text-align:center;padding:10px;border:1px solid #AAAAA;background-color:yellow;  margin-top:40px;'>您当前的选择，无返回信息，请重新调整条件!</div>"); 
                   msg.insertAfter($('#detail')); 
                   msg.show(200); 
               }  
        }
+	});
+}
+
+var deleteRecord = function(id){
+	$.messager.confirm('警告','你正在进行删除操作，是否继续？',function(r){
+		if(r){
+			$.ajax({
+				url:"/user/delete",
+				async:false,
+				type:"DELETE",
+				contentType : 'application/json',
+				data:JSON.stringify({"id":id}),
+				success:function(data){
+					msg = eval('(' + data + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							loadData();
+						}
+					});
+				}
+			});
+		}
 	});
 }
 

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.system.po.BasePo;
 import com.system.po.Useroles;
+import com.system.po.Users;
+import com.system.utils.GsonUtils;
 import com.system.vo.ParamsVo;
 
 @Repository
@@ -63,8 +65,22 @@ public class UserolesRepository extends BaseRepository<Useroles> {
 
 	@Override
 	public Useroles queryById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select json_object('roleId',roleId,'userId',userId) from useroles where id = '"+id+"' ";
+		logger.info("【人员角色】获取人员角色的sql为:"+sql); 
+		String result = jdbcTemplate.queryForObject(sql, String.class);
+		return GsonUtils.getGson().fromJson(result, Useroles.class);
 	}
 
+	public Useroles queryByUserId(String userId) {
+		String sql = "select json_object('roleId',ur.role_id,'userId',ur.user_id) from useroles ur join roles r on r.role_id = ur.role_id where user_id = '"+userId+"' ";
+		logger.info("【人员角色】获取人员角色的sql为:"+sql); 
+		try {
+			String result = jdbcTemplate.queryForObject(sql, String.class);
+			return GsonUtils.getGson().fromJson(result, Useroles.class);
+
+		}catch(Exception e) {
+			
+			return null;
+		}
+	}
 }

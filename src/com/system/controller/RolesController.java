@@ -80,4 +80,9 @@ public class RolesController {
 		rolesService.update(roles);
 		return "{'flag':'0','msg':'修改成功'}";
 	}
+	
+	@RequestMapping(value="/queryAllRoles",method=RequestMethod.GET)
+	public void queryAllCollege(HttpServletRequest request,HttpServletResponse response) {
+		WebHelper.sendData(response, rolesService.queryAllRoles());
+	}
 }

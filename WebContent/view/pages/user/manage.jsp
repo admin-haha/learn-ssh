@@ -14,13 +14,26 @@
 </head>
 <body class="easyui-layout">
 <div style='display:none'><span style="visibility: hidden;white-space: nowrap; font-size: 24px; " id='forStrLen'></span></div>
-<div region="north"  split="true" id="northdiv" style="height:100px;padding:10px;">
+<div region="north"  split="true" id="northdiv" style="height:120px;padding:10px;">
 	<table width="98%">
 				<tr>
 					<td width="30%">
 						<label>人员名称：</label>
 	                       	<input id="name" class="easyui-textbox" >
 					</td>
+					<td width="30%">
+						<label>人员角色：</label>
+						<input id="role" class="easyui-combobox" data-options="
+				                    url:'/role/queryAllRoles',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'text',
+				                    multiple:true,
+				                    panelHeight:'auto'
+				                    ">
+					</td>
+				</tr>
+				<tr>
 					<td width="30%">
 						<label>所属学院：</label>
 						<input id="college" class="easyui-combobox" data-options="
@@ -38,7 +51,7 @@
 				                    }
 				                    ">
 					</td> 
-					<td width="40%">
+					<td width="30%">
 					<label>所属科系：</label>
 					<input id="department" class="easyui-combobox" data-options="url:'/department/queryAllDepartment',
 						                    method:'get',
@@ -46,6 +59,8 @@
 						                    textField:'text',
 						                    multiple:true,
 						                    panelHeight:'auto'">
+					</td>
+					<td width="40%">
 					</td>
 				</tr>
 				<tr>
@@ -72,7 +87,7 @@ var loadData = function(){
 	$('#detail').datagrid({
 		height: $(window).height()  - 30,
 		url: '/user/query' ,
-		queryParams:{name:$('#name').val(),college:$('#college').val(),department:$('#department').val()},
+		queryParams:{name:$('#name').val(),college:$('#college').val(),department:$('#department').val(),"role":$('#role').val()},
 		method:'POST',
 		pageNumber: 1,
         pageSize:20,
@@ -83,16 +98,26 @@ var loadData = function(){
         singleSelect:true,//单行选取
         pagination:true,//显示分页
 	    columns:[[
-	        {field:'name', title:'人员名称', width: '10%',halign: 'center',align:'center'},
-	        {field:'gender', title:'性别', width: '5%',halign: 'center',align:'center'},
-	        {field:'role', title:'角色', width: '10%',halign: 'center',align:'center'},
-	        {field:'department', title:'所属科系', width: '15%',halign: 'center',align:'center'},
-	        {field:'college', title:'所属学院', width: '15%',halign: 'center',align:'center'},
-	        {field:'account', title:'登陆账号', width: '15%',halign: 'center',align:'center'},
-	        {field:'mobile', title:'联系电话', width: '15%',halign: 'center',align:'center'},
-	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
-	        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'}
-	    ]],
+	        {field:'name', title:'人员名称', width: '10%',halign: 'center',align:'center',rowspan:2},
+	        {field:'gender', title:'性别', width: '5%',halign: 'center',align:'center',rowspan:2},
+	        {field:'role', title:'角色', width: '10%',halign: 'center',align:'center',rowspan:2},
+	        {field:'department', title:'所属科系', width: '15%',halign: 'center',align:'center',rowspan:2},
+	        {field:'college', title:'所属学院', width: '15%',halign: 'center',align:'center',rowspan:2},
+	        {field:'account', title:'登陆账号', width: '15%',halign: 'center',align:'center',rowspan:2},
+	        {field:'mobile', title:'联系电话', width: '15%',halign: 'center',align:'center',rowspan:2},
+	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center',rowspan:2},
+	        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center',rowspan:2},
+	        {field:'opt', title:'操作', width: '26%',colspan:2,halign: 'center',align:'center',rowspan:1}
+	    ],[ 
+		    {field:'update', title:'修改', width: '13%',halign: 'center',align:'center',rowspan:1,formatter:function(val,rec){
+	    		var id = rec.id;
+	    		return '<a href="javascript:update(\''+id+'\');">修改</a>';
+	    }},
+	    {field:'delete', title:'分配角色', width: '13%',halign: 'center',align:'center',rowspan:1,formatter:function(val,rec){
+				var id = rec.id;
+				return '<a href="javascript:assignRole(\''+id+'\');">分配角色</a>';
+		}}
+	 	]],
 	  
 	    onLoadSuccess: function (data) {
 	    	$("#noResultMsg").remove();
@@ -107,9 +132,12 @@ var loadData = function(){
 }
 
 var update = function(id){
-	myOpen('/user/update?id='+id,500,600);
+	myOpen('/user/update?userId='+id,500,600);
 }
 
+var assignRole = function(id){
+	myOpen('/user/assignRole?userId='+id,500,600);
+}
 var deleteRecord = function(id){
 	$.messager.confirm('警告','你正在进行删除操作，是否继续？',function(r){
 		if(r){

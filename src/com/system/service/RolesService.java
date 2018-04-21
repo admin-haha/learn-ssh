@@ -1,6 +1,8 @@
 package com.system.service;
 
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,9 @@ public class RolesService {
 	 * 获取所有角色数据
 	 * @return
 	 */
-	public String queryAllRoles(String collegeIds) {
-		collegeIds = StringUtils.join(StringUtils.split(collegeIds),"','");
-		//List<String> datas = rolesRepository.queryAllDepartment("'"+collegeIds+"'");
-		return GsonUtils.list2JsonArray(null).toString();
+	public String queryAllRoles() {
+		List<String> datas = rolesRepository.queryAllRoles();
+		return GsonUtils.list2JsonArray(datas).toString();
 	}
 	public void update(Roles roles) {
 		rolesRepository.update(roles);

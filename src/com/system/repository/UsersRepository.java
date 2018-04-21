@@ -10,7 +10,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.system.po.BasePo;
+import com.system.po.College;
 import com.system.po.Users;
+import com.system.utils.GsonUtils;
 import com.system.vo.ParamsVo;
 
 @Repository
@@ -38,7 +40,7 @@ public class UsersRepository extends BaseRepository<Users> {
 	@Override
 	public void save(Users vo) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("insert into users(id,name,gender,college_id,department_id,account,password,mobile)");
+		sql.append("insert into users(user_id,name,gender,college_id,department_id,account,password,mobile)");
 		sql.append("values( ");
 		sql.append("'").append(vo.getId()).append("',");
 		sql.append("'").append(vo.getName()).append("',");
@@ -65,7 +67,7 @@ public class UsersRepository extends BaseRepository<Users> {
 		sql.append(" password =").append("'").append(vo.getPassword()).append("',");
 		sql.append(" mobile =").append("'").append(vo.getMobile()).append("',");
 		sql.append(" update_time =").append("current_timestamp ");
-		sql.append(" where id = '").append(vo.getId()).append("' ");
+		sql.append(" where user_id = '").append(vo.getId()).append("' ");
 		logger.info("【人员】更新人员的sql为："+sql.toString());
 		jdbcTemplate.execute(sql.toString());	
 	}
@@ -82,28 +84,16 @@ public class UsersRepository extends BaseRepository<Users> {
 
 	@Override
 	public Users queryById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select json_object('id',user_id,'name',name,'gender',gender,'collegeId',college_id,'departmentId',department_id,'account',account,'password',password,'mobile',mobile,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from users where user_id = '"+id+"' ";
+		logger.info("【学院】获取学院的sql为:"+sql); 
+		String result = jdbcTemplate.queryForObject(sql, String.class);
+		return GsonUtils.getGson().fromJson(result, Users.class);
 	}
 
 	public Users queryByAccountAndPassword(String account,String password) {
-		StringBuilder sql = new StringBuilder();
-		sql.append("select * from users where account = '");
-		sql.append(account).append("' and password = '");
-		sql.append(password).append("' ");
-		logger.info("【人员】查询人员数据的sql为:"+sql.toString());
-		try {
-			return jdbcTemplate.queryForObject(sql.toString(), new RowMapper<Users>() {
-
-				@Override
-				public Users mapRow(ResultSet arg0, int arg1) throws SQLException {
-					// TODO Auto-generated method stub
-					return null;
-				}
-			});
-		}catch(Exception e) {
-			logger.error("【人员】查询人员信息出错："+e.getMessage(),e);
-			return null;
-		}
+		String sql = "select json_object('id',user_id,'name',name,'gender',gender,'collegeId',college_id,'departmentId',department_id,'account',account,'password',password,'mobile',mobile,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from users where account = '"+account+"' and password = '"+password+"'";
+		logger.info("【学院】获取学院的sql为:"+sql); 
+		String result = jdbcTemplate.queryForObject(sql, String.class);
+		return GsonUtils.getGson().fromJson(result, Users.class);
 	}
 }

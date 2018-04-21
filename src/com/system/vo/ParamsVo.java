@@ -26,6 +26,8 @@ public class ParamsVo implements Serializable {
 	
 	private String departmentIds;
 
+	private String roleIds;
+	
 	public Integer getPage() {
 		return page;
 	}
@@ -80,7 +82,7 @@ public class ParamsVo implements Serializable {
 	}
 
 	public String getDepartmentIds() {
-		if(StringUtils.isNotBlank(collegeIds)) {
+		if(StringUtils.isNotBlank(departmentIds)) {
 			return "'"+StringUtils.join(StringUtils.split(departmentIds,","),"','")+"'";
 		}
 		return departmentIds;
@@ -88,6 +90,17 @@ public class ParamsVo implements Serializable {
 
 	public void setDepartmentIds(String departmentIds) {
 		this.departmentIds = departmentIds;
+	}
+
+	public String getRoleIds() {
+		if(StringUtils.isNotBlank(roleIds)) {
+			return "'"+StringUtils.join(StringUtils.split(roleIds,","),"','")+"'";
+		}
+		return roleIds;
+	}
+
+	public void setRoleIds(String roleIds) {
+		this.roleIds = roleIds;
 	}
 	
 	

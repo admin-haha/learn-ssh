@@ -73,4 +73,14 @@ public class RolesRepository extends BaseRepository<Roles> {
 			return null;
 		}
 	}
+	
+	public List<String> queryAllRoles(){
+		String sql = "select json_object('id',role_id,'text',name) from roles ";
+		logger.info("【角色】获取角色的sql为:"+sql);
+		try {
+			return jdbcTemplate.queryForList(sql, String.class);
+		}catch(Exception e) {
+			return null;
+		}
+	}
 }

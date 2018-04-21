@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import com.google.gson.JsonObject;
+import com.system.po.Useroles;
 import com.system.po.Users;
 import com.system.repository.CommonRepository;
 import com.system.repository.UsersRepository;
@@ -68,11 +69,14 @@ public class UserService {
 		if(StringUtils.isNotBlank(paramsVo.getDepartmentIds())) {
 			sql = sql+"and d.id in ("+paramsVo.getDepartmentIds()+") ";
 		}
-		
+		if(StringUtils.isNotBlank(paramsVo.getRoleIds())) {
+			sql = sql+"and r.role_id in ("+paramsVo.getRoleIds()+") ";
+		}
 		int count = commonRepository.count(sql);
 		result.addProperty("total", count);
 		sql = sql +"limit "+paramsVo.getOffset()+","+paramsVo.getRows();
 		result.add("rows", GsonUtils.list2JsonArray(commonRepository.queryBySql(sql)));
 		return result.toString();
 	}
+	
 }

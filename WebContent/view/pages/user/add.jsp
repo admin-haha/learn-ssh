@@ -24,8 +24,8 @@
 		<div class="row-div">
 			<div class="row-left"><label>性别</label></div>
 			<div class="row-right">
-					<input type="radio" style="margin-top: 8px;" name="gender" value="0" checked/>&nbsp;男&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="radio" style="margin-top: 8px;" name="gender" value="1" />&nbsp;女
+					<input type="radio" style="margin-top: 8px;" class="gender" name="gender" value="0" checked/>&nbsp;男&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" style="margin-top: 8px;" class="gender"  name="gender" value="1" />&nbsp;女
 			</div>
 		</div>
 		<div class="row-div">
@@ -60,19 +60,19 @@
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>联系电话</label></div>
-			<div class="row-right"><input class="easyui-textbox"  ></div>
+			<div class="row-right"><input class="easyui-textbox" id="mobile" ></div>
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>登陆账号</label></div>
-			<div class="row-right"><input class="easyui-textbox" data-options="iconCls:'icon-man'" ></div>
+			<div class="row-right"><input class="easyui-textbox" id="account" data-options="iconCls:'icon-man'" ></div>
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>登录密码</label></div>
-			<div class="row-right"><input class="easyui-passwordbox" iconWidth="28" style="height:34px;padding:10px"></div>
+			<div class="row-right"><input class="easyui-passwordbox" id="password" iconWidth="28" style="height:34px;padding:10px"></div>
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>确认密码</label></div>
-			<div class="row-right"><input class="easyui-passwordbox" iconWidth="28" style="height:34px;padding:10px"></div>
+			<div class="row-right"><input class="easyui-passwordbox" id="password2" iconWidth="28" style="height:34px;padding:10px"></div>
 		</div>
 		<div class="bottom-div">
 			<button class="button-blue" id="save">提交</button>
@@ -88,11 +88,11 @@
 				return ;
 			}
 			$.ajax({
-				url:"/role/save",
+				url:"/user/save",
 				async:false,
 				type:"POST",
 				contentType : 'application/json',
-				data:JSON.stringify({"name":name,"memo":$('#memo').val()}),
+				data:JSON.stringify({"id":$('#id').val(),"account":$('#account').val(),"password":$("#password").val(),"name":name,"gender":$('.gender:checked').val(),'mobile':$('#mobile').val(),'collegeId':$('#college').val(),'departmentId':$('#department').val()}),
 				success:function(data){
 					msg = eval('(' + data + ')');
 					$.messager.alert('提示',msg.msg,'info',function(){

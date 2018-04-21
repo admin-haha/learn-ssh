@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.system.po.BasePo;
 import com.system.po.UserProject;
+import com.system.po.Users;
+import com.system.utils.GsonUtils;
 import com.system.utils.StringKit;
 import com.system.vo.ParamsVo;
 
@@ -73,8 +75,10 @@ public class UserProjectRepository extends BaseRepository<UserProject> {
 
 	@Override
 	public UserProject queryById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select json_object('id',id,'name',name) from college where id = '"+id+"' ";
+		logger.info("【学院】获取学院的sql为:"+sql); 
+		String result = jdbcTemplate.queryForObject(sql, String.class);
+		return GsonUtils.getGson().fromJson(result, UserProject.class);
 	}
 
 }
