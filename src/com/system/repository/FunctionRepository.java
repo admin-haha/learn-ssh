@@ -2,6 +2,7 @@ package com.system.repository;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -88,10 +89,14 @@ public class FunctionRepository extends BaseRepository<Function> {
 		}
 	}
 	
-	public List<String> queryRootFunction() {
+	public List<String> queryRootFunction(String roleId) {
 		String sql = "select "
-				+ "json_object('functionId',func_id,'parentId',parent_id,'funcname',name,'detailinfo',func_url,'funcorder',func_order)"
-				+ " from function where parent_id = '-1' order by func_order asc";
+				+ "json_object('functionId',r.func_id,'parentId',r.parent_id,'funcname',r.name,'detailinfo',r.func_url,'funcorder',r.func_order)"
+				+ " from function r where r.parent_id = '-1'";
+				if(StringUtils.isNotBlank(roleId)) {
+					sql += " and exists (select 1 from rolefunction rf join role f on f.role_id = rf.role_id where rf.func_id = r.func_id and  f.role_id = '"+roleId+"') ";
+				}
+				sql += " order by r.func_order asc";
 		logger.info("【权限】获取父权限的sql为:"+sql);
 		try {
 			return jdbcTemplate.queryForList(sql, String.class);
@@ -101,8 +106,12 @@ public class FunctionRepository extends BaseRepository<Function> {
 		
 	}
 	
-	public List<String> querySubFunction(String parentId) {
-		String sql = "select json_object('id',func_id,'iconCls','null','parentId',parent_id,'text',concat('<a href=\\\"javascript:addTab(\\\'',name,'\\\',\\\'',func_url,'\\\',\\\'',func_id,'\\\');\\\">',name,'</a>')) from function where parent_id = '"+parentId+"' order by func_order asc";
+	public List<String> querySubFunction(String parentId,String roleId) {
+		String sql = "select json_object('id',f.func_id,'iconCls','null','parentId',f.parent_id,'text',concat('<a href=\\\"javascript:addTab(\\\'',f.name,'\\\',\\\'',f.func_url,'\\\',\\\'',f.func_id,'\\\');\\\">',f.name,'</a>')) from function f ";
+				if(StringUtils.isNotBlank(roleId)) {
+					sql += " and exists (select 1 from rolefunction rf join role r on r.role_id = rf.role_id where rf.func_id = f.func_id and  r.role_id = '"+roleId+"') ";
+				}
+				sql += "where f.parent_id = '"+parentId+"' order by f.func_order asc";
 		logger.info("【权限】获取子权限的sql为:"+sql);
 		try {
 			return jdbcTemplate.queryForList(sql, String.class);

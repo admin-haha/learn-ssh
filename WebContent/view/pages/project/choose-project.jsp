@@ -100,9 +100,14 @@ var loadData = function(){
 	        			return '<font color="green">已完成</font>';
 	        		}
 	        	
+	        }},
+	        {field:'opt', title:'操作', width: '6%',halign: 'center',align:'center',formatter(val,rec){
+	        		var id = rec.id;
+				return '<a href="javascript:choose(\''+id+'\',\''+rec.text+'\');">选择</a>';
 	        }}
+	       
 	    ]],
-	    onLoadSuccess: function (data) {
+	    onLoadSuccess:function (data) {
 	    	$("#noResultMsg").remove();
         	var rowArray = $('#detail').datagrid('getRows');               
               if(rowArray.length==0){
@@ -115,6 +120,31 @@ var loadData = function(){
 }
 
 $('#query').on('click',loadData);
+
+
+var choose = function(id,name){
+	var userId = $('#userId').val();
+	var projectId = id;
+	$.messager.confirm('确认','你是否我确认选择该题目《'+name+'》？',function(r){
+		if(r){
+			$.ajax({
+				url:"/project/choose",
+				async:false,
+				type:"POST",
+				contentType : 'application/json',
+				data:JSON.stringify({"userId":userId,'projectId':projectId}),
+				success:function(data){
+					msg = eval('(' + data + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							loadData();
+						}
+					});
+				}
+			});
+		}
+	});
+}
 
 </script>
 </body>

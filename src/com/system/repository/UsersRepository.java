@@ -85,14 +85,14 @@ public class UsersRepository extends BaseRepository<Users> {
 	@Override
 	public Users queryById(String id) {
 		String sql = "select json_object('id',user_id,'name',name,'gender',gender,'collegeId',college_id,'departmentId',department_id,'account',account,'password',password,'mobile',mobile,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from users where user_id = '"+id+"' ";
-		logger.info("【学院】获取学院的sql为:"+sql); 
+		logger.info("【人员】获取人员的sql为:"+sql); 
 		String result = jdbcTemplate.queryForObject(sql, String.class);
 		return GsonUtils.getGson().fromJson(result, Users.class);
 	}
 
 	public Users queryByAccountAndPassword(String account,String password) {
 		String sql = "select json_object('id',user_id,'name',name,'gender',gender,'collegeId',college_id,'departmentId',department_id,'account',account,'password',password,'mobile',mobile,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from users where account = '"+account+"' and password = '"+password+"'";
-		logger.info("【学院】获取学院的sql为:"+sql); 
+		logger.info("【人员】获取人员的sql为:"+sql); 
 		String result = jdbcTemplate.queryForObject(sql, String.class);
 		return GsonUtils.getGson().fromJson(result, Users.class);
 	}

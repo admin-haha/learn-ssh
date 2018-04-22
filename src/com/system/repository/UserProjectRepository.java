@@ -75,7 +75,14 @@ public class UserProjectRepository extends BaseRepository<UserProject> {
 
 	@Override
 	public UserProject queryById(String id) {
-		String sql = "select json_object('id',id,'name',name) from college where id = '"+id+"' ";
+		String sql = "select json_object('userId',user_id,'projectId',project_id) from college where project_id = '"+id+"' ";
+		logger.info("【学院】获取学院的sql为:"+sql); 
+		String result = jdbcTemplate.queryForObject(sql, String.class);
+		return GsonUtils.getGson().fromJson(result, UserProject.class);
+	}
+	
+	public UserProject queryByUserId(String userId) {
+		String sql = "select json_object('userId',user_id,'projectId',project_id) from college where user_id = '"+userId+"' ";
 		logger.info("【学院】获取学院的sql为:"+sql); 
 		String result = jdbcTemplate.queryForObject(sql, String.class);
 		return GsonUtils.getGson().fromJson(result, UserProject.class);

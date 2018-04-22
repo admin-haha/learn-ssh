@@ -51,6 +51,15 @@ public class UserController {
 		WebHelper.sendData(response, userService.queryUsersByParamsVo(paramVo));
 	}
 	
+	@RequestMapping(value="/queryAllUsersWithProject",method=RequestMethod.POST)
+	public void queryAllUsersByProject(HttpServletRequest request,HttpServletResponse response,String name,String projectId,int rows,int page) {
+		ParamsVo paramVo = new ParamsVo();
+		paramVo.setName(name);
+		paramVo.setPage(page);
+		paramVo.setRows(rows);
+		WebHelper.sendData(response, userService.queryUsersWithProjectByParamsVo(paramVo));
+	}
+	
 	@RequestMapping(value="/add",method=RequestMethod.GET)
 	public String toSaveUser(HttpServletRequest request,HttpServletResponse response) {
 		return "/user/add";

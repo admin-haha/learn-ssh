@@ -11,9 +11,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.system.constant.Constant;
+import com.system.po.Users;
+import com.system.utils.GsonUtils;
+
 public class RequestHandleIntercepter extends HandlerInterceptorAdapter {
 
 	private Logger logger = LoggerFactory.getLogger(RequestHandleIntercepter.class);
+	
 	
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object arg2, Exception arg3)
@@ -31,7 +36,8 @@ public class RequestHandleIntercepter extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		logger.info("进入拦截器.........");
-//		Users users = (Users) request.getSession().getAttribute(AppConstant.SESSION_USER_KEY);
+		Users users = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		logger.info("进入拦截器.........user=="+GsonUtils.getGson().toJson(users));
 		String method = request.getMethod();
 		String url = request.getServletPath();
 		Enumeration<String> paramNames = request.getParameterNames();

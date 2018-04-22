@@ -6,7 +6,7 @@ $( function() {
 var menu = [];
 $( function() {
 	$.ajaxSettings.async = false;
-	$.getJSON('/function/rootFunction',{}, function(data) {
+	$.getJSON('/function/rootFunction?roleId='+$('#roleId').val(),{}, function(data) {
 		if (data) {
 			menu = data.rows;
 		}
@@ -35,7 +35,7 @@ function loadsubFunction(funcid, parentid) {
 			{
 				checkbox :false,
 				method:'GET',
-				url :'/function/subFunction?parentId=' + funcid
+				url :'/function/subFunction?parentId=' + funcid+'&roleId='+$('#roleId').val()
 						+ '&c=' + Math.round(Math.random() * 10000) + '',
 				onClick : function(node) {
 					$(this).tree('toggle', node.target);

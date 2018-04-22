@@ -28,6 +28,8 @@ public class ParamsVo implements Serializable {
 
 	private String roleIds;
 	
+	private String projectId;
+	
 	public Integer getPage() {
 		return page;
 	}
@@ -102,6 +104,13 @@ public class ParamsVo implements Serializable {
 	public void setRoleIds(String roleIds) {
 		this.roleIds = roleIds;
 	}
-	
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
 	
 }

@@ -45,7 +45,8 @@
 				                    valueField:'id',
 				                    textField:'text',
 				                    multiple:false,
-				                    panelHeight:'auto',onLoadSuccess:function(){
+				                    panelHeight:'auto',
+				                    onLoadSuccess:function(){
 				                    	$('#college').combobox('setValue','${usercollegeId }');
 				                    },
 				                    onChange:function(newValue,oldValue){

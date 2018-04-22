@@ -3,16 +3,26 @@ package com.system.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.system.constant.Constant;
+import com.system.po.Useroles;
 import com.system.po.Users;
+import com.system.service.UserService;
+import com.system.service.UserolesService;
+import com.system.utils.WebHelper;
 
 @Controller
 public class LoginController {
 
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private UserolesService userolesService;
 	/**
 	 * 首页
 	 * @param request
@@ -29,21 +39,31 @@ public class LoginController {
 	//非法登录，直接返回至登录页
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String illegalLogin(final HttpServletRequest request) {
-		return  "redirect:/index";
+		return  "/login";
 	}
 	//不接收Get请求
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(final HttpServletRequest request, final HttpServletResponse response,
-			final ModelMap context, final Integer ownerId, final String account,
-			final String password, final String loginUrl, final String yanZhengMa,final String tenantCode) {
+	public String login( HttpServletRequest request,  HttpServletResponse response,
+			 ModelMap context,  Integer ownerId, String account, String password,  String loginUrl,  String yanZhengMa) {
 
 		//校验人员
-		//Users vo = 
+		Users vo = null;
+		try {
+			vo = userService.queryByAccountAndPassword(account, password);
+		}catch(Exception e) {
+			
+		}
+		if(vo==null) {
+			return "/login";
+		}
+		request.getSession().setAttribute(Constant.SESSION_KEY, vo);
 		//人员角色
+		Useroles useroles = userolesService.queryByUserId(vo.getId());
+		context.addAttribute("user",vo);
+		context.addAttribute("roleId", useroles!=null?useroles.getRoleId():"");
+		WebHelper.sendData(response, "{'flag':'0','msg':'保存成功'}");
 		
-		//人员权限
-		
-		return "redirect:/index";
+		return "/index";
 
 	}
 

@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.system.po.Project;
 import com.system.repository.CommonRepository;
 import com.system.repository.ProjectRepository;
+import com.system.repository.UserProjectRepository;
 import com.system.utils.GsonUtils;
 import com.system.vo.ParamsVo;
 
@@ -20,6 +21,8 @@ public class ProjectService {
 	private ProjectRepository projectRepository;
 	@Autowired
 	private CommonRepository commonRepository;
+	@Autowired
+	private UserProjectRepository userProjectRepository;
 	
 	/**
 	 * 获取所有学院数据
@@ -36,21 +39,23 @@ public class ProjectService {
 		projectRepository.save(project);
 	}
 	public void delete(Project project) {
+		//删除选题关系
+		userProjectRepository.deleteByProjectId(project.getId());
+		//删除
 		projectRepository.delete(project);
 	}
 	public Project queryById(String id) {
 		return projectRepository.queryById(id);
 	}
 	
-	public String queryUsersByParamsVo(ParamsVo paramsVo) {
+	public String queryProjectsByParamsVo(ParamsVo paramsVo) {
 		JsonObject result = new JsonObject();
-		String sql = "select json_object('id',u.user_id,'name',u.name,'account',u.account,'mobile',u.mobile,'gender',(case when u.gender = 0 then '男' else '女' end),'role',r.name,'college',c.name,'department',d.name,'createTime',DATE_FORMAT(u.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(u.update_time,'%Y-%m-%d')) from users u "
-				+ " left join college c on c.id = u.college_id left join department d on u.department_id = d.id and d.college_id = c.id "
-				+ " left join useroles ur on ur.user_id = u.user_id "
-				+ " left join roles r on r.role_id = ur.role_id "
+		String sql = "select json_object('id',p.id,'text',p.title,'chooseCount',(select count(1) from userproject up where up.project_id = p.id),'belongTo',p.belong_to,'teacher',u.name,'detail',p.detail,'memo',p.memo,'studentCount',p.student_count,'canChoose',(case when (select count(1) from userproject up where up.project_id = p.id)=p.student_count then '1' else '0' end),'college',c.name,'department',d.name,'createTime',DATE_FORMAT(u.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(u.update_time,'%Y-%m-%d')) from project p "
+				+ " left join college c on c.id = p.college_id left join department d on p.department_id = d.id and d.college_id = c.id "
+				+ " left join users u on u.user_id = p.belong_to "
 				+ " where 1=1 "; 
 		if(StringUtils.isNotBlank(paramsVo.getName())) {
-			sql = sql+" and u.name like '%"+paramsVo.getName()+"%' ";
+			sql = sql+" and p.name like '%"+paramsVo.getName()+"%' ";
 		}
 		if(StringUtils.isNotBlank(paramsVo.getCollegeIds())) {
 			sql = sql+"and c.id in ("+paramsVo.getCollegeIds()+") ";

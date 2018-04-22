@@ -39,9 +39,9 @@ public class FunctionService {
 		return arr.toString();
 	}
 	
-	public String queryRootFunction() {
+	public String queryRootFunction(String roleId) {
 		JsonObject result = new JsonObject();
-		List<String> datas = functionRepository.queryRootFunction();
+		List<String> datas = functionRepository.queryRootFunction(roleId);
 		if(datas!=null) {
 			result.addProperty("total", datas.size());
 		}
@@ -49,8 +49,8 @@ public class FunctionService {
 		return result.toString();
 	}
 	
-	public String querySubFunction(String parentId) {
-		List<String> datas = functionRepository.querySubFunction(parentId);
+	public String querySubFunction(String parentId,String roleId) {
+		List<String> datas = functionRepository.querySubFunction(parentId,roleId);
 		
 		return GsonUtils.list2JsonArray(datas).toString();
 	}

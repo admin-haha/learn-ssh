@@ -32,6 +32,10 @@ public class UserService {
 		return context;
 	}
 	
+	public Users queryByAccountAndPassword(String account,String password) {
+		return usersRepository.queryByAccountAndPassword(account, password);
+	}
+	
 	/**
 	 * 获取所有学院数据
 	 * @return
@@ -59,6 +63,8 @@ public class UserService {
 				+ " left join college c on c.id = u.college_id left join department d on u.department_id = d.id and d.college_id = c.id "
 				+ " left join useroles ur on ur.user_id = u.user_id "
 				+ " left join roles r on r.role_id = ur.role_id "
+				+ " left join userproject up on up.user_id = u.user_id "
+				+ " left join project p on p.id = up.project_id "
 				+ " where 1=1 "; 
 		if(StringUtils.isNotBlank(paramsVo.getName())) {
 			sql = sql+" and u.name like '%"+paramsVo.getName()+"%' ";
@@ -71,6 +77,40 @@ public class UserService {
 		}
 		if(StringUtils.isNotBlank(paramsVo.getRoleIds())) {
 			sql = sql+"and r.role_id in ("+paramsVo.getRoleIds()+") ";
+		}
+		if(StringUtils.isNotBlank(paramsVo.getProjectId())) {
+			sql = sql+"and p.id = '"+paramsVo.getProjectId()+"' ";
+		}
+		int count = commonRepository.count(sql);
+		result.addProperty("total", count);
+		sql = sql +"limit "+paramsVo.getOffset()+","+paramsVo.getRows();
+		result.add("rows", GsonUtils.list2JsonArray(commonRepository.queryBySql(sql)));
+		return result.toString();
+	}
+	
+	public String queryUsersWithProjectByParamsVo(ParamsVo paramsVo) {
+		JsonObject result = new JsonObject();
+		String sql = "select json_object('id',u.user_id,'name',u.name,'account',u.account,'mobile',u.mobile,'gender',(case when u.gender = 0 then '男' else '女' end),'role',r.name,'college',c.name,'department',d.name,'createTime',DATE_FORMAT(u.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(u.update_time,'%Y-%m-%d')) from users u "
+				+ " left join college c on c.id = u.college_id left join department d on u.department_id = d.id and d.college_id = c.id "
+				+ " left join useroles ur on ur.user_id = u.user_id "
+				+ " left join roles r on r.role_id = ur.role_id "
+				+ " join userproject up on up.user_id = u.user_id "
+				+ " join project p on p.id = up.project_id "
+				+ " where 1=1 "; 
+		if(StringUtils.isNotBlank(paramsVo.getName())) {
+			sql = sql+" and u.name like '%"+paramsVo.getName()+"%' ";
+		}
+		if(StringUtils.isNotBlank(paramsVo.getCollegeIds())) {
+			sql = sql+"and c.id in ("+paramsVo.getCollegeIds()+") ";
+		}
+		if(StringUtils.isNotBlank(paramsVo.getDepartmentIds())) {
+			sql = sql+"and d.id in ("+paramsVo.getDepartmentIds()+") ";
+		}
+		if(StringUtils.isNotBlank(paramsVo.getRoleIds())) {
+			sql = sql+"and r.role_id in ("+paramsVo.getRoleIds()+") ";
+		}
+		if(StringUtils.isNotBlank(paramsVo.getProjectId())) {
+			sql = sql+"and p.id = '"+paramsVo.getProjectId()+"' ";
 		}
 		int count = commonRepository.count(sql);
 		result.addProperty("total", count);

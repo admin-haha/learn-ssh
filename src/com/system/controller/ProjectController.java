@@ -3,6 +3,7 @@ package com.system.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.system.constant.Constant;
 import com.system.po.Project;
+import com.system.po.Roles;
 import com.system.po.UserProject;
+import com.system.po.Users;
 import com.system.service.ProjectService;
 import com.system.service.UserProjectService;
+import com.system.service.UserService;
 import com.system.utils.WebHelper;
 import com.system.vo.ParamsVo;
 
@@ -27,6 +32,8 @@ public class ProjectController {
 	
 	@Autowired
 	private UserProjectService userProjectService;
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String queryAllProjects(HttpServletRequest request,HttpServletResponse response) {
@@ -48,7 +55,7 @@ public class ProjectController {
 		paramVo.setRows(rows);
 		paramVo.setCollegeIds(college);
 		paramVo.setDepartmentIds(department);
-		WebHelper.sendData(response, null);
+		WebHelper.sendData(response, projectService.queryProjectsByParamsVo(paramVo));
 	}
 	
 	@RequestMapping(value="/add",method=RequestMethod.GET)
@@ -66,26 +73,61 @@ public class ProjectController {
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	@ResponseBody
 	public String saveProject(HttpServletRequest request,HttpServletResponse response,@RequestBody Project project) {
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		if(user == null) {
+			user = userService.queryById("9850c514b6134a468bebdf4406cea9e1");
+		}
+		project.setBelongTo(user.getId());
 		projectService.save(project);
-		return "{'flag':'0','msg':'新增成功'}";
+		return "{'flag':'0','msg':'保存成功'}";
 	}
 	
 	@RequestMapping(value="/update",method=RequestMethod.PUT)
 	@ResponseBody
 	public String updateProject(HttpServletRequest request,HttpServletResponse response,@RequestBody Project project) {
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		if(user == null) {
+			user = userService.queryById("9850c514b6134a468bebdf4406cea9e1");
+		}
+		if(StringUtils.isBlank(project.getBelongTo())) {
+			project.setBelongTo(user.getId());
+		}
 		projectService.update(project);
 		return "{'flag':'0','msg':'修改成功'}";
 	}
 	
-	@RequestMapping(value="/chooseProject",method=RequestMethod.GET)
+	@RequestMapping(value="/delete",method=RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteCollege(HttpServletRequest request,HttpServletResponse response,@RequestBody Project project) {
+		projectService.delete(project);
+		return "{'flag':'0','msg':'删除成功'}";
+	}
+	
+	@RequestMapping(value="/choose",method=RequestMethod.GET)
 	public String toChooseProject(HttpServletRequest request,HttpServletResponse response) {
 		
 		return "/project/choose-project";
 	}
 	
-	@RequestMapping(value="/chooseProject",method=RequestMethod.POST)
+	@RequestMapping(value="/choose/result",method=RequestMethod.GET)
+	public String chooseResult(HttpServletRequest request,HttpServletResponse response) {
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		return "/project/user-choose-project";
+	}
+	
+	@RequestMapping(value="/toChooseResult",method=RequestMethod.GET)
+	public String toChooseProject(HttpServletRequest request,HttpServletResponse response,String id,ModelMap content) {
+		content.addAttribute("project", projectService.queryById(id));
+		return "/project/choose-result";
+	}
+	
+	@RequestMapping(value="/choose",method=RequestMethod.POST)
 	@ResponseBody
 	public String chooseProject(HttpServletRequest request,HttpServletResponse response,@RequestBody UserProject userProject) {
+		if(StringUtils.isBlank(userProject.getUserId())) {
+			userProject.setUserId("9850c514b6134a468bebdf4406cea9e1");
+		}
+		userProjectService.deleteByUserId(userProject.getUserId());
 		userProjectService.save(userProject);
 		return "{'flag':'0','msg':'保存成功'}";
 	}

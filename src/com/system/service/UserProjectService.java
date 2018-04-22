@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonObject;
-import com.system.po.Project;
 import com.system.po.UserProject;
 import com.system.repository.CommonRepository;
-import com.system.repository.ProjectRepository;
 import com.system.repository.UserProjectRepository;
 import com.system.utils.GsonUtils;
 import com.system.vo.ParamsVo;
@@ -40,8 +38,16 @@ public class UserProjectService {
 	public void delete(UserProject userProject) {
 		userProjectRepository.delete(userProject);
 	}
+	
+	public void deleteByUserId(String userId) {
+		userProjectRepository.deleteByUserId(userId);
+	}
+	
 	public UserProject queryById(String id) {
 		return userProjectRepository.queryById(id);
+	}
+	public UserProject queryByUserId(String userId) {
+		return userProjectRepository.queryByUserId(userId);
 	}
 	
 	public String queryUsersByParamsVo(ParamsVo paramsVo) {

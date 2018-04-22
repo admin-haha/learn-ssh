@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.system.po.BasePo;
 import com.system.po.Project;
+import com.system.po.Users;
+import com.system.utils.GsonUtils;
 import com.system.vo.ParamsVo;
 
 @Repository
@@ -39,7 +41,7 @@ public class ProjectRepository extends BaseRepository<Project> {
 	public void update(Project vo) {
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append(" update project(id,title,detail,memo,student_count,belong_to,college_id,department_id) ");
+		sql.append(" update project ");
 		sql.append(" set ");
 		sql.append(" title = '").append(vo.getTitle()).append("',");
 		sql.append(" detail = '").append(vo.getDetail()).append("',");
@@ -69,8 +71,10 @@ public class ProjectRepository extends BaseRepository<Project> {
 
 	@Override
 	public Project queryById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select json_object('id',id,'title',title,'detail',detail,'memo',memo,'collegeId',college_id,'departmentId',department_id,'studentCount',student_count,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from project where id = '"+id+"' ";
+		logger.info("【题目】获取题目的sql为:"+sql); 
+		String result = jdbcTemplate.queryForObject(sql, String.class);
+		return GsonUtils.getGson().fromJson(result, Project.class);
 	}
 
 }

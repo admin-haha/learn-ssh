@@ -18,12 +18,61 @@
 			<h3>修改题目</h3>
 		</div>
 		<div class="row-div">
-			<div class="row-left"><label>角色名称</label></div>
-			<div class="row-right"><input type="text" id="name" /></div>
+			<div class="row-left"><label>题目名称</label></div>
+			<div class="row-right">
+				<input type="text" id="name" value="${project.title }" />
+				<input type="hidden" id="id" value="${project.id }" />
+			</div>
 		</div>
 		<div class="row-div">
-			<div class="row-left"><label>角色描述</label></div>
-			<div class="row-right"><textarea cols="3" rows="20" id="memo"></textarea></div>
+			<div class="row-left"><label>所属学院</label></div>
+			<div class="row-right">
+					<input id="college" class="easyui-combobox" data-options="
+				                    url:'/college/queryAllCollege',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'text',
+				                    multiple:false,
+				                    panelHeight:'auto',
+				                    onLoadSuccess:function(){
+				                    	$('#college').combobox('setValue','${project.collegeId }');
+				                    },
+				                    onChange:function(newValue,oldValue){
+				                    	$('#department').combobox('reload','/department/queryAllDepartment?collegeIds='+newValue);
+				                    },
+				                    onUnselect:function(){
+				                    	$('#department').combobox('clear');
+				                    }
+				                    ">
+			</div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>所属专业</label></div>
+			<div class="row-right">
+					<input id="department" class="easyui-combobox" data-options="url:'/department/queryAllDepartment',
+						                    method:'get',
+						                    valueField:'id',
+						                    textField:'text',
+						                    multiple:false,
+						                    panelHeight:'auto',
+						                    onLoadSuccess:function(){
+						                    	$('#department').combobox('setValue','${project.departmentId }');
+						                    }">
+			</div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>详细描述</label></div>
+			<div class="row-right"><textarea cols="30" rows="3" id="detail" draggable="false">${project.detail }</textarea></div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>学生个数</label></div>
+			<div class="row-right">
+            <input class="easyui-numberspinner" id="studentCount" value="${project.studentCount }" data-options="min:1,max:10" style="width:100%;">
+			</div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>备注</label></div>
+			<div class="row-right"><textarea cols="30" rows="3" id="memo" draggable="false">${project.memo }</textarea></div>
 		</div>
 		<div class="bottom-div">
 			<button class="button-blue" id= "save" >提交</button>
@@ -32,18 +81,39 @@
 <script type="text/javascript">
 		
 		
-		var save = function(){
-			$.ajax({
-				url:"/role/save",
-				async:false,
-				type:"POST",
-				dataType:"json",
-				data:{"name":$('#name').val(),"memo":$('#memo').val()},
-				success:function(data){
-					
+var save = function(){
+	var name = $('#name').val();
+	var department = $('#department').val();
+	var college = $('#college').val();
+	if(!name||''==name||'undefined'==name){
+		$.messager.alert('提示','请输入题目名称','warn');
+		return ;
+	}
+	if(!department||''==department||'undefined'==department){
+		$.messager.alert('提示','请选择学院','warn');
+		return ;
+	}
+	if(!college||''==college||'undefined'==college){
+		$.messager.alert('提示','请选择专业','warn');
+		return ;
+	}
+	$.ajax({
+		url:"/project/update",
+		async:false,
+		type:"PUT",
+		contentType : 'application/json',
+		data:JSON.stringify({"id":$('#id').val(),"title":name,"detail":$('#detail').val(),"memo":$('#memo').val(),'studentCount':$('#studentCount').val(),'collegeId':$('#college').val(),'departmentId':$('#department').val()}),
+		success:function(data){
+			msg = eval('(' + data + ')');
+			$.messager.alert('提示',msg.msg,'info',function(){
+				if('0'==msg.flag){
+					window.close();
+					window.opener.loadData();
 				}
 			});
 		}
+	});
+}
 		$('#save').on('click',save);
 </script>
 </body>
