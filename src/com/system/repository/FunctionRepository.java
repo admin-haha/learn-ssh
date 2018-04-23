@@ -94,7 +94,7 @@ public class FunctionRepository extends BaseRepository<Function> {
 				+ "json_object('functionId',r.func_id,'parentId',r.parent_id,'funcname',r.name,'detailinfo',r.func_url,'funcorder',r.func_order)"
 				+ " from function r where r.parent_id = '-1'";
 				if(StringUtils.isNotBlank(roleId)) {
-					sql += " and exists (select 1 from rolefunction rf join role f on f.role_id = rf.role_id where rf.func_id = r.func_id and  f.role_id = '"+roleId+"') ";
+					sql += " and exists (select 1 from rolefunction rf join roles f on f.role_id = rf.role_id where rf.func_id = r.func_id and  f.role_id = '"+roleId+"') ";
 				}
 				sql += " order by r.func_order asc";
 		logger.info("【权限】获取父权限的sql为:"+sql);
@@ -107,11 +107,11 @@ public class FunctionRepository extends BaseRepository<Function> {
 	}
 	
 	public List<String> querySubFunction(String parentId,String roleId) {
-		String sql = "select json_object('id',f.func_id,'iconCls','null','parentId',f.parent_id,'text',concat('<a href=\\\"javascript:addTab(\\\'',f.name,'\\\',\\\'',f.func_url,'\\\',\\\'',f.func_id,'\\\');\\\">',f.name,'</a>')) from function f ";
+		String sql = "select json_object('id',f.func_id,'iconCls','null','parentId',f.parent_id,'text',concat('<a href=\\\"javascript:addTab(\\\'',f.name,'\\\',\\\'',f.func_url,'\\\',\\\'',f.func_id,'\\\');\\\">',f.name,'</a>')) from function f where 1=1  ";
 				if(StringUtils.isNotBlank(roleId)) {
-					sql += " and exists (select 1 from rolefunction rf join role r on r.role_id = rf.role_id where rf.func_id = f.func_id and  r.role_id = '"+roleId+"') ";
+					sql += " and exists (select 1 from rolefunction rf join roles r on r.role_id = rf.role_id where rf.func_id = f.func_id and  r.role_id = '"+roleId+"') ";
 				}
-				sql += "where f.parent_id = '"+parentId+"' order by f.func_order asc";
+				sql += " and f.parent_id = '"+parentId+"' order by f.func_order asc";
 		logger.info("【权限】获取子权限的sql为:"+sql);
 		try {
 			return jdbcTemplate.queryForList(sql, String.class);

@@ -30,7 +30,7 @@ $(function(){
 			method:'GET',
 			checkbox:true,
 			lines:true,
-			cascadeCheck:true,
+			cascadeCheck:false,
 			idField:'id',
 		    treeField:'name',
 		    columns:[[
@@ -68,7 +68,7 @@ $(function(){
 			
 			var nodes = $('#detail').treegrid('getCheckedNodes');
 			if(!nodes||nodes.length==0){
-				$.messager.confirm('确认？','你对该角色为选择任何权限，是否继续保存？',function(r){
+				$.messager.confirm('确认？','你对该角色未选择任何权限，是否继续保存？',function(r){
 					if(r){
 						var arr = new Array();
 						var record = {"roleId":'${role.id}',"funcId":''};

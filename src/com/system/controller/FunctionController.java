@@ -82,13 +82,13 @@ public class FunctionController {
 	
 	@RequestMapping(value="/rootFunction",method=RequestMethod.GET)
 	public void queryRootFunction(HttpServletResponse response,String roleId) {
-		String result = functionService.queryRootFunction("");
+		String result = functionService.queryRootFunction(roleId);
 		WebHelper.sendData(response, result);
 	}
 	
 	@RequestMapping(value="/subFunction",method=RequestMethod.GET)
 	public void querySubFunction(HttpServletResponse response,HttpServletRequest request,String parentId,String roleId) {
-		String result = functionService.querySubFunction(parentId,"");
+		String result = functionService.querySubFunction(parentId,roleId);
 		WebHelper.sendData(response, result);
 	}
 }

@@ -57,7 +57,7 @@
         
     </head>
     <body class="easyui-layout">
-        
+        <input id="roleId" type="hidden" value="${roleId }" />
         <div region="north" style="font-size: 15px;font-family:'Microsoft YaHei',微软雅黑,'Times New Roman'; background:fafafa;color:2d5593;height:60px;background-image: url('/img/fbi-background.png'); background-repeat: 
                repeat-x; background-position: left top">
 			<table border="0" width="100%" cellspacing="0" cellpadding="0" height="100%" style="font-family:'Microsoft YaHei',微软雅黑,'Times New Roman';font-size: 15px">

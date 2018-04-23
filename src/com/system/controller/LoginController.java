@@ -61,7 +61,7 @@ public class LoginController {
 		Useroles useroles = userolesService.queryByUserId(vo.getId());
 		context.addAttribute("user",vo);
 		context.addAttribute("roleId", useroles!=null?useroles.getRoleId():"");
-		WebHelper.sendData(response, "{'flag':'0','msg':'保存成功'}");
+		//WebHelper.sendData(response, "{'flag':'0','msg':'保存成功'}");
 		
 		return "/index";
 

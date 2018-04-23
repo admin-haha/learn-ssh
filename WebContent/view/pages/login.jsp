@@ -11,9 +11,10 @@
 		<link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <link type="text/css" rel="stylesheet" href="/css/common.css" />
-<script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="/js/jquery-1.9.1.min.js" ></script>
 <script type="text/javascript" src="/jquery-easyui/jquery.easyui.min.js" ></script>
 <script type="text/javascript" src="/jquery-easyui/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript" src="/js/jquery.pin.js" ></script>
 		<style>
 			header{
 				width:100%;
@@ -123,20 +124,23 @@
 			</div>
 		</header>
 		<div id="login-div">
-				<ul>
-					<li>
-						<b>用户登录</b>
-					</li>
-					<li>
-						<label>账号：</label><input class="easyui-textbox" id="account" data-options="iconCls:'icon-man'" >
-					</li>
-					<li>
-						<label>密码：</label><input class="easyui-passwordbox" id="password" iconWidth="28" style="height:34px;padding:10px">
-					</li>
-					<li>
-						<button id="login">登录</button>
-					</li>
-				</ul>
+			<div id="pin-div">hahahha</div>
+			<form action="/login" method="post">
+					<ul>
+						<li>
+							<b>用户登录</b>
+						</li>
+						<li>
+							<label>账号：</label><input class="easyui-textbox" name="account" id="account" data-options="iconCls:'icon-man'" >
+						</li>
+						<li>
+							<label>密码：</label><input class="easyui-passwordbox" name="password" id="password" iconWidth="28" style="height:34px;padding:10px">
+						</li>
+						<li>
+							<button  type="submit">登录</button>
+						</li>
+					</ul>
+			</form>
 		</div>
 		<footer>
 					<p>沪|cp备13044278 | 合字B1.B2-20130004 | 营业执照</p>
@@ -144,6 +148,10 @@
 		</footer>
 	</body>
 	<script type="text/javascript">
+	(function(){
+		
+		$('#pin-div').pin();
+		
 		var login = function (){
 			var account = $('#account').val();
 			var password = $('#password').val();
@@ -161,8 +169,7 @@
 				url:"/login",
 				async:false,
 				type:"POST",
-				contentType : 'application/json',
-				data:JSON.stringify({"account":account,"password":password}),
+				data:{"account":account,"password":password},
 				success:function(data){
 					/* msg = eval('(' + data + ')');
 					$.messager.alert('提示',msg.msg,'info',function(){
@@ -176,5 +183,7 @@
 		}
 		
 		$('#login').on('click',login);
+	})()
+		
 	</script>
 </html>
