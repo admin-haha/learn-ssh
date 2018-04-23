@@ -97,6 +97,11 @@ var loadData = function(){
         striped: true,
         singleSelect:true,//单行选取
         pagination:true,//显示分页
+        toolbar: [{
+            text:'人员导入',
+            iconCls:'icon-save',
+            handler:userImport
+       		 }],
 	    columns:[[
 	        {field:'name', title:'人员名称', width: '10%',halign: 'center',align:'center',rowspan:2},
 	        {field:'gender', title:'性别', width: '5%',halign: 'center',align:'center',rowspan:2},
@@ -133,6 +138,10 @@ var loadData = function(){
 
 var update = function(id){
 	myOpen('/user/update?userId='+id,500,600);
+}
+
+var userImport = function(){
+	myOpen('/user/import',500,500);
 }
 
 var assignRole = function(id){

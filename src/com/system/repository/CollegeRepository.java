@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.google.gson.reflect.TypeToken;
+import com.system.excel.vo.BaseCollegeAndDepartmentVo;
 import com.system.po.BasePo;
 import com.system.po.College;
 import com.system.utils.GsonUtils;
@@ -16,6 +18,8 @@ public class CollegeRepository extends BaseRepository<College> {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private CommonRepository<BaseCollegeAndDepartmentVo> commonRepository;
 	
 	@Override
 	public void save(College vo) {
@@ -54,6 +58,14 @@ public class CollegeRepository extends BaseRepository<College> {
 		return null;
 	}
 
+	public List<BaseCollegeAndDepartmentVo> queryAllCollegeAndDepartment(){
+		String sql = "select json_object('collegeId',c.id,'collegeName',c.name,'departmentId',d.id,'departmentName',d.name) from college c left join department d on d.college_id = c.id  order by c.id ";
+		logger.info("【学院】获取学院和科系的sql为:"+sql); 
+		List<String> datas = jdbcTemplate.queryForList(sql,String.class);
+		
+		return commonRepository.list2Object(datas, BaseCollegeAndDepartmentVo.class);
+	}
+	
 	@Override
 	public College queryById(String id) {
 		String sql = "select json_object('id',id,'name',name) from college where id = '"+id+"' ";

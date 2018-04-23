@@ -1,5 +1,6 @@
 package com.system.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.system.utils.GsonUtils;
+
 @Repository
-public class CommonRepository {
+public class CommonRepository<T> {
 
 	private Logger logger = LoggerFactory.getLogger(CommonRepository.class);
 	@Autowired
@@ -36,4 +39,16 @@ public class CommonRepository {
 			return null;
 		}
 	}
+	
+  public List<T> list2Object(List<String> datas,Class clazz) {
+    	List<T> result = new ArrayList<T>();
+		if(datas!=null&&datas.size()>0) {
+			
+			for(String item:datas) {
+				result.add((T) GsonUtils.getGson().fromJson(item, clazz));
+			}
+		}
+		return result;
+    	
+    }
 }

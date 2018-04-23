@@ -82,6 +82,12 @@ public class UsersRepository extends BaseRepository<Users> {
 	}
 
 
+	public int queryByAccount(String account) {
+		String sql = "select count(1) from users where account = '"+account+"' ";
+		logger.info("【人员】判断账号是否存在的sql为:"+sql); 
+		return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+	
 	@Override
 	public Users queryById(String id) {
 		String sql = "select json_object('id',user_id,'name',name,'gender',gender,'collegeId',college_id,'departmentId',department_id,'account',account,'password',password,'mobile',mobile,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from users where user_id = '"+id+"' ";

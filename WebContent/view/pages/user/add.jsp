@@ -80,13 +80,7 @@
 	</div>
 <script type="text/javascript">
 		
-		
-		var save = function(){
-			var name = $('#name').val();
-			if(!name||''==name||'undefined'==name){
-				$.messager.alert('提示','请输入角色名称','warn');
-				return ;
-			}
+		var saveUser = function(name){
 			$.ajax({
 				url:"/user/save",
 				async:false,
@@ -104,6 +98,38 @@
 				}
 			});
 		}
+		var save = function(){
+			var canSave = false;
+			var name = $('#name').val();
+			var account = $('#account').val();
+			if(!name||''==name||'undefined'==name){
+				$.messager.alert('提示','请输入角色名称','warn');
+				return ;
+			}
+			
+			if(!account||''==account||'undefined'==account){
+				$.ajax({
+					url:"/user/checkAccountIsExists",
+					async:false,
+					type:"POST",
+					contentType : 'application/json',
+					data:JSON.stringify({"account":account}),
+					success:function(data){
+						msg = eval('(' + data + ')');
+						if('1'==msg.flag){
+							$.messager.alert('提示',msg.msg,'info');
+						}else{
+							saveUser(name);
+						}
+						
+					}
+				});
+			}else{
+				saveUser(name);
+			}
+		}
+		
+		
 		$('#save').on('click',save);
 </script>
 </body>

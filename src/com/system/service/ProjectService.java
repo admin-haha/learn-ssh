@@ -55,7 +55,7 @@ public class ProjectService {
 				+ " left join users u on u.user_id = p.belong_to "
 				+ " where 1=1 "; 
 		if(StringUtils.isNotBlank(paramsVo.getName())) {
-			sql = sql+" and p.name like '%"+paramsVo.getName()+"%' ";
+			sql = sql+" and p.title like '%"+paramsVo.getName()+"%' ";
 		}
 		if(StringUtils.isNotBlank(paramsVo.getCollegeIds())) {
 			sql = sql+"and c.id in ("+paramsVo.getCollegeIds()+") ";

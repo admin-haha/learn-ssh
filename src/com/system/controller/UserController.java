@@ -1,8 +1,14 @@
 package com.system.controller;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.system.po.Useroles;
 import com.system.po.Users;
+import com.system.service.FileUploadService;
 import com.system.service.UserService;
 import com.system.service.UserolesService;
+import com.system.utils.FileUtil;
 import com.system.utils.WebHelper;
 import com.system.vo.ParamsVo;
 
@@ -26,6 +34,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private UserolesService userolesService;
+	@Autowired
+	private FileUploadService fileUploadService;
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String toQueryPage(HttpServletRequest request,HttpServletResponse response) {
@@ -103,4 +113,54 @@ public class UserController {
 		return "{'flag':'0','msg':'分配成功'}";
 	}
 	
+	@RequestMapping(value="/import",method=RequestMethod.GET)
+	public String userImport(HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException {
+		return "/user/user-import";
+	}
+	
+	/**
+	 * 人员批量导入
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value="/import",method=RequestMethod.POST)
+	@ResponseBody
+	public String userImportDatas(HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException {
+		try {
+			fileUploadService.uploadFile(request, null, null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return "{'flag':'0','msg':'导入成功'}";
+
+	}
+	
+	@RequestMapping(value="/checkAccountIsExists",method=RequestMethod.POST)
+	@ResponseBody
+	public String checkAccountIsExists(HttpServletRequest request,HttpServletResponse response,String account) throws UnsupportedEncodingException {
+		if(userService.checkAccountIsExists(account)) {
+			return "{'flag':'1','msg':'该账号已存在'}";
+		} else {
+			return "{'flag':'0','msg':'账号可用'}";
+		}
+
+	}
+	
+	@RequestMapping(value="/downloadUserTemplate",method=RequestMethod.GET)
+	public void downloadUserTemplate(HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException {
+		String userAgent = request.getHeader("USER-AGENT");
+		String fileName="";
+		if(StringUtils.contains(userAgent, "Firefox")){ //火狐
+			fileName =new String(("人员导入模板.xls").getBytes(), "ISO-8859-1");
+		}else{
+			fileName = "人员导入模板.xls";
+		}
+		Workbook workbook = userService.userTemplate(fileName);
+		if(workbook!=null) {
+			FileUtil.exportExcel(response, fileName, workbook);
+		}
+	}
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.system.excel.vo.BaseCollegeAndDepartmentVo;
 import com.system.po.College;
 import com.system.repository.CollegeRepository;
 import com.system.repository.CommonRepository;
@@ -54,5 +55,9 @@ public class CollegeService {
 		sql = sql +"limit "+paramsVo.getOffset()+","+paramsVo.getRows();
 		result.add("rows", GsonUtils.list2JsonArray(commonRepository.queryBySql(sql)));
 		return result.toString();
+	}
+	
+	public List<BaseCollegeAndDepartmentVo> queryAllCollegeAndDepartment(){
+		return collegeRepository.queryAllCollegeAndDepartment();
 	}
 }

@@ -5,16 +5,22 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import com.google.gson.JsonObject;
+import com.system.excel.utils.SimpleExcelExportUtil;
+import com.system.excel.vo.BaseCollegeAndDepartmentVo;
+import com.system.excel.vo.BaseExportVo;
+import com.system.excel.vo.UsersTemplateVo;
 import com.system.po.Useroles;
 import com.system.po.Users;
 import com.system.repository.CommonRepository;
 import com.system.repository.UsersRepository;
 import com.system.utils.GsonUtils;
+import com.system.utils.StringKit;
 import com.system.vo.ParamsVo;
 
 @Service
@@ -24,6 +30,10 @@ public class UserService {
 	private UsersRepository usersRepository;
 	@Autowired
 	private CommonRepository commonRepository;
+	@Autowired
+	private SimpleExcelExportUtil simpleExcelExportUtil;
+	@Autowired
+	private CollegeService collegeService;
 	
 	private ModelMap checkUserLogin(HttpServletResponse response,String account,String password,ModelMap context) {
 		Users vo = usersRepository.queryByAccountAndPassword(account, password);
@@ -34,6 +44,15 @@ public class UserService {
 	
 	public Users queryByAccountAndPassword(String account,String password) {
 		return usersRepository.queryByAccountAndPassword(account, password);
+	}
+	
+	public boolean checkAccountIsExists(String account) {
+		int count = usersRepository.queryByAccount(account);
+		if(count>0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	/**
@@ -48,7 +67,28 @@ public class UserService {
 		usersRepository.update(users);
 	}
 	public void save(Users users) {
-		usersRepository.save(users);
+		if(!checkAccountIsExists(users.getAccount())) {
+			usersRepository.save(users);
+		}
+	}
+	public void batchSave(List<Users> datas) {
+		if(datas!=null&&datas.size()>0) {
+			for(Users vo:datas) {
+				if(vo!=null) {
+					String mobile = StringKit.filter(StringKit.toString(vo.getMobile()).trim());
+					if(!checkAccountIsExists(mobile)) { //如果账号存在跳过
+						vo.setName(StringKit.filter(StringKit.toString(vo.getMobile()).trim()));
+						vo.setGender(StringKit.toInt(StringKit.filter(StringKit.toString(vo.getGender()).trim())));
+						vo.setCollegeId(StringKit.filter(StringKit.toString(vo.getCollegeId()).trim()));
+						vo.setDepartmentId(StringKit.filter(StringKit.toString(vo.getDepartmentId()).trim()));
+						vo.setMobile(mobile);
+						vo.setAccount(mobile);
+						vo.setPassword(mobile);
+						usersRepository.save(vo);
+					}
+				}
+			}
+		}
 	}
 	public void delete(Users users) {
 		usersRepository.delete(users);
@@ -117,6 +157,23 @@ public class UserService {
 		sql = sql +"limit "+paramsVo.getOffset()+","+paramsVo.getRows();
 		result.add("rows", GsonUtils.list2JsonArray(commonRepository.queryBySql(sql)));
 		return result.toString();
+	}
+	
+	public Workbook userTemplate(String fileName) {
+		
+		BaseExportVo<UsersTemplateVo> vo = new BaseExportVo<UsersTemplateVo>();
+		vo.getDatas().add(new UsersTemplateVo());
+		BaseExportVo<BaseCollegeAndDepartmentVo> collegeAndDepartment = new BaseExportVo<BaseCollegeAndDepartmentVo>();
+		collegeAndDepartment.getDatas().addAll(collegeService.queryAllCollegeAndDepartment());
+		Workbook workbook = null;
+		try {
+			workbook = simpleExcelExportUtil.exportOnlyHeader(workbook, "人员模板", fileName, vo, 0);
+			workbook = simpleExcelExportUtil.export(workbook, "学院&科系", fileName, collegeAndDepartment, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return workbook;
 	}
 	
 }
