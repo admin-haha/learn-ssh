@@ -31,9 +31,9 @@
 				<input type="hidden" id="userId" value="${user.id }"/>
 			</div>
 		</div>
-		<div class="row-div">
-			<div class="row-left"><label>评分（1~10）</label></div>
-			<div class="row-right">
+		<div class="row-div" >
+			<div class="row-left" ><label>评分(1~10)</label></div>
+			<div class="row-right" >
             <input class="easyui-numberspinner" id="score" value="1" data-options="min:1,max:10" style="width:100%;">
 			</div>
 		</div>

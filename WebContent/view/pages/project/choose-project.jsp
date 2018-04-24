@@ -103,10 +103,13 @@ var loadData = function(){
 	        }},
 	        {field:'opt', title:'操作', width: '6%',halign: 'center',align:'center',formatter(val,rec){
 	        		var id = rec.id;
-				return '<a href="javascript:choose(\''+id+'\',\''+rec.text+'\');">选择</a>';
-	        }}
-	       
-	    ]],
+	        		if('0' == rec.canChoose){
+	        			return '<a href="javascript:choose(\''+id+'\',\''+rec.text+'\');">选择</a>';
+	        		}else{
+	        			return '-';
+	        		}
+				}
+	        }]],
 	    onLoadSuccess:function (data) {
 	    	$("#noResultMsg").remove();
         	var rowArray = $('#detail').datagrid('getRows');               

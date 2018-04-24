@@ -49,12 +49,25 @@ public class ProjectRepository extends BaseRepository<Project> {
 		sql.append(" student_count = ").append(vo.getStudentCount()).append(",");
 		sql.append(" belong_to = '").append(vo.getBelongTo()).append("',");
 		sql.append(" college_id = '").append(vo.getCollegeId()).append("',");
-		sql.append(" department_id = '").append(vo.getDepartmentId()).append("' ");
+		sql.append(" department_id = '").append(vo.getDepartmentId()).append("', ");
+		sql.append(" update_time = current_timestamp ");
 		sql.append(" where id = '").append(vo.getId()).append("' ");
 		logger.info("【题目】更新题目的sql为:"+sql.toString());
 		jdbcTemplate.execute(sql.toString());
 	}
 
+	public void updateStatus(String projectId,Integer status) {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append(" update project ");
+		sql.append(" set ");
+		sql.append(" status = ").append(status).append(" ,");
+		sql.append(" update_time = current_timestamp ");
+		sql.append(" where id = '").append(projectId).append("' ");
+		logger.info("【题目】修改题目状态的sql为:"+sql.toString());
+		jdbcTemplate.execute(sql.toString());
+	}
+	
 	@Override
 	public void delete(Project vo) {
 		StringBuilder sql = new StringBuilder();
@@ -71,7 +84,7 @@ public class ProjectRepository extends BaseRepository<Project> {
 
 	@Override
 	public Project queryById(String id) {
-		String sql = "select json_object('id',id,'title',title,'detail',detail,'memo',memo,'collegeId',college_id,'departmentId',department_id,'studentCount',student_count,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from project where id = '"+id+"' ";
+		String sql = "select json_object('id',id,'title',title,'status',status,'detail',detail,'memo',memo,'collegeId',college_id,'departmentId',department_id,'studentCount',student_count,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from project where id = '"+id+"' ";
 		logger.info("【题目】获取题目的sql为:"+sql); 
 		String result = jdbcTemplate.queryForObject(sql, String.class);
 		return GsonUtils.getGson().fromJson(result, Project.class);

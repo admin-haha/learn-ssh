@@ -71,7 +71,7 @@
 var loadData = function(){
 	$('#detail').datagrid({
 		height: $(window).height()  - 30,
-		url: '/project/query',
+		url: '/project/query' ,
 		queryParams:{name:$('#name').val(),college:$('#college').val(),department:$('#department').val()},
 		method:'POST',
 		pageNumber: 1,
@@ -87,7 +87,7 @@ var loadData = function(){
 	        {field:'teacher', title:'指导教师', width: '10%',halign: 'center',align:'center'},
 	        {field:'detail', title:'详细描述', width: '20%',halign: 'center',align:'center'},
 	        {field:'memo', title:'备注', width: '10%',halign: 'center',align:'center'},
-	        {field:'status', title:'审核状态', width: '10%',halign: 'center',align:'center',rowspan:2,formatter:function(val,rec){
+	        {field:'status', title:'审核状态', width: '10%',halign: 'center',align:'center',formatter:function(val,rec){
 	        	if(rec.status==0){
     				return '<font color="green">审核通过</font>';
     			}else{
@@ -97,29 +97,45 @@ var loadData = function(){
 	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
 	        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'},
 	        {field:'studentCount', title:'需要人数', width: '5%',halign: 'center',align:'center'},
-	        {field:'chooseCount', title:'已选人数', width: '5%',halign: 'center',align:'center',formatter:function(val,rec){
-        				return rec.chooseCount+'人选择';
-        }},
-	        {field:'status', title:'选题状态', width: '5%',halign: 'center',align:'center',formatter:function(val,rec){
-	        		if('0' == rec.canChoose){
-	        			return '<font color="red">进行中</font>';
-	        		}else{
-	        			return '<font color="green">已完成</font>';
-	        		}
-	        	
-	        }}
-	    ]],
+	        {field:'opt', title:'操作', width: '10%',halign: 'center',align:'center',formatter:function(val,rec){
+    			var id = rec.id;
+				return '<a href="javascript:check(\''+id+'\','+0+');">审核通过</a>|<a href="javascript:check(\''+id+'\','+1+');">审核不通过</a>';;
+		}}]],
 	    onLoadSuccess: function (data) {
 	    	$("#noResultMsg").remove();
         	var rowArray = $('#detail').datagrid('getRows');               
               if(rowArray.length==0){
-               var msg = $("<div id ='noResultMsg' style='display:none;text-align:center;padding:10px;border:1px solid #AAAAA;background-color:yellow;  margin-top:20px;'>您当前的选择，无返回信息，请重新调整条件!</div>"); 
+               var msg = $("<div id ='noResultMsg' style='display:none;text-align:center;padding:10px;border:1px solid #AAAAA;background-color:yellow;  margin-top:40px;'>您当前的选择，无返回信息，请重新调整条件!</div>"); 
                   msg.insertAfter($('#detail')); 
                   msg.show(200); 
               }  
        }
 	});
 }
+
+
+var check = function(id,status){
+	$.messager.confirm('警告','你正在审核题目，是否继续？',function(r){
+		if(r){
+			$.ajax({
+				url:"/project/check",
+				async:false,
+				type:"POST",
+				contentType : 'application/json',
+				data:{"projectId":id,'status':status},
+				success:function(data){
+					msg = eval('(' + data + ')');
+					$.messager.alert('提示',msg.msg,'info',function(){
+						if('0'==msg.flag){
+							loadData();
+						}
+					});
+				}
+			});
+		}
+	});
+}
+
 
 $('#query').on('click',loadData);
 

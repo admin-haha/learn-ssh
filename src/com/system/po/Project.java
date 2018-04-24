@@ -22,7 +22,9 @@ public class Project extends BasePo {
 	private String collegeId; //所属学院
 	
 	private String departmentId; //所属专业
-
+	
+	private Integer status; //状态  默认 通过0  ；不通过1
+	
 	public String getTitle() {
 		return title;
 	}
@@ -78,4 +80,13 @@ public class Project extends BasePo {
 	public void setDepartmentId(String departmentId) {
 		this.departmentId = departmentId;
 	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	
 }

@@ -47,6 +47,12 @@ public class ProjectController {
 		return "/project/manage";
 	}
 	
+	@RequestMapping(value="/check",method=RequestMethod.GET)
+	public String tocheckPage(HttpServletRequest request,HttpServletResponse response) {
+		
+		return "/project/check";
+	}
+	
 	@RequestMapping(value="/query",method=RequestMethod.POST)
 	public void queryAllProjects(HttpServletRequest request,HttpServletResponse response,String name,String department,String college,int rows,int page) {
 		ParamsVo paramVo = new ParamsVo();
@@ -131,7 +137,7 @@ public class ProjectController {
 		content.addAttribute("teacher", teacher);
 		content.addAttribute("userProject", userProject);
 		content.addAttribute("project", project);
-		return "/project/user-choose-project";
+		return "/project/user-choose-result";
 	}
 	
 	@RequestMapping(value="/score",method=RequestMethod.GET)
@@ -150,6 +156,14 @@ public class ProjectController {
 		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
 		userProject.setCheckBy(user.getId());
 		userProjectService.update(userProject);
+		return "{'flag':'0','msg':'保存成功'}";
+	}
+	
+
+	@RequestMapping(value="/check",method=RequestMethod.POST)
+	@ResponseBody
+	public String check(HttpServletRequest request,HttpServletResponse response,ModelMap content,String projectId,Integer status) {
+		projectService.updateStatus(projectId, status);
 		return "{'flag':'0','msg':'保存成功'}";
 	}
 	

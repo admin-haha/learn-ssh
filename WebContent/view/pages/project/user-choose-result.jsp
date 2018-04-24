@@ -77,10 +77,10 @@
 					<input type="text" value="${userProject.score }" readonly="readonly"/>
 			</div>
 		</div>
-		<div class="row-div">
-			<div class="row-left"><label>评语</label></div>
-			<div class="row-right">
-					<input type="text" value="${userProject.memo }" readonly="readonly"/>
+		<div class="row-div" style="height:80px;">
+			<div class="row-left" style="height:70px;"><label>评语</label></div>
+			<div class="row-right" style="height:70px;">
+					<textarea cols="30" rows="5" readonly="readonly" draggable="false">${userProject.memo }</textarea>
 			</div>
 		</div>
 		<div class="bottom-div">

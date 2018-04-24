@@ -9,10 +9,11 @@
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <link type="text/css" rel="stylesheet" href="/css/common.css" />
 <script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="/js/utils.js" ></script>
 <script type="text/javascript" src="/jquery-easyui/jquery.easyui.min.js" ></script>
 <script type="text/javascript" src="/jquery-easyui/locale/easyui-lang-zh_CN.js" ></script>
 </head>
-<body class="easyui-layout">
+<body class="easyui-layout" style="overflow: auto;">
 	<input type="hidden" value="${user.id }" id='userId' />
 	<input type="hidden" value="${project.belongTo }" id='teacher' />
 	<input type="hidden" value="${project.id }" id='projectId' />
@@ -20,10 +21,15 @@
     <p>选择该题目的人员</p>
     <div style="text-align: center;"><button class="button-blue" id="close" style="width:30%;">关闭</button></div>
     <div style="margin:20px 0;"></div>
-    <table title="分配权限" id="detail"  >
+    <table title="选题结果" id="detail"  >
     </table>
     <p></p>
 <script type="text/javascript">
+
+var score = function(userId){
+	var projectId = $('#projectId').val();
+	myOpen('/project/score?userId='+userId+'&projectId='+projectId,500,500);
+}
 	var loadData = function(){
 		var projectId = '${project.id}';
 		$('#detail').datagrid({
@@ -47,10 +53,17 @@
 		        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
 		        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'},
 		        {field:'score', title:'得分', width: '15%',halign: 'center',align:'center',formatter:function(val,rec){
-		        	if(''==val){
-		        		return '<font color="red">'+未评分+'</font>';
+		        	var score = '';
+		        	try{
+	        			score = paserInt(val);
+	        		}catch(err){
+	        			
+	        		}
+		        	if('' == score){
+		        		return '<font color="red">'+'未评分'+'</font>';
 		        	}else{
-		        		return '<font color="green">'+val+'</font>';
+		        		
+		        		return '<font color="green">'+score+'</font>';
 		        	}
 		        }},
 		        {field:'memo', title:'评语', width: '15%',halign: 'center',align:'center'},
@@ -62,10 +75,10 @@
 		        	}else{
 		        		return '-';
 		        	}
-		        }},
-		    ]]
+		        }}]]
 		});
 	}	
+	
 $(function(){
 	
 		loadData();
@@ -74,10 +87,6 @@ $(function(){
 			window.close();
 		});
 		
-		var score = function(userId){
-			var projectId = $('#projectId').val();
-			myOpen('/project/score?userId='+id+'&projectId='+projectId,500,500);
-		}
 });
 
 

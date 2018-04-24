@@ -30,6 +30,8 @@ public class ParamsVo implements Serializable {
 	
 	private String projectId;
 	
+	private String status;
+	
 	public Integer getPage() {
 		return page;
 	}
@@ -111,6 +113,14 @@ public class ParamsVo implements Serializable {
 
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

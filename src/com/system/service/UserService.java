@@ -104,7 +104,7 @@ public class UserService {
 				+ " left join useroles ur on ur.user_id = u.user_id "
 				+ " left join roles r on r.role_id = ur.role_id "
 				+ " left join userproject up on up.user_id = u.user_id "
-				+ " left join project p on p.id = up.project_id "
+				+ " left join project p on p.id = up.project_id and p.status = 0 "
 				+ " where 1=1 "; 
 		if(StringUtils.isNotBlank(paramsVo.getName())) {
 			sql = sql+" and u.name like '%"+paramsVo.getName()+"%' ";

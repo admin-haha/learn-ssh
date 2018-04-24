@@ -48,9 +48,13 @@ public class ProjectService {
 		return projectRepository.queryById(id);
 	}
 	
+	public void updateStatus(String projectId,Integer status) {
+		projectRepository.updateStatus(projectId, status);
+	}
+	
 	public String queryProjectsByParamsVo(ParamsVo paramsVo) {
 		JsonObject result = new JsonObject();
-		String sql = "select json_object('id',p.id,'text',p.title,'chooseCount',(select count(1) from userproject up where up.project_id = p.id),'belongTo',p.belong_to,'teacher',u.name,'detail',p.detail,'memo',p.memo,'studentCount',p.student_count,'canChoose',(case when (select count(1) from userproject up where up.project_id = p.id)=p.student_count then '1' else '0' end),'college',c.name,'department',d.name,'createTime',DATE_FORMAT(u.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(u.update_time,'%Y-%m-%d')) from project p "
+		String sql = "select json_object('id',p.id,'text',p.title,'status',p.status,'chooseCount',(select count(1) from userproject up where up.project_id = p.id),'belongTo',p.belong_to,'teacher',u.name,'detail',p.detail,'memo',p.memo,'studentCount',p.student_count,'canChoose',(case when (select count(1) from userproject up where up.project_id = p.id)=p.student_count then '1' else '0' end),'college',c.name,'department',d.name,'createTime',DATE_FORMAT(u.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(u.update_time,'%Y-%m-%d')) from project p "
 				+ " left join college c on c.id = p.college_id left join department d on p.department_id = d.id and d.college_id = c.id "
 				+ " left join users u on u.user_id = p.belong_to "
 				+ " where 1=1 "; 
