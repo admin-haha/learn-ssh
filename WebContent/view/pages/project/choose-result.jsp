@@ -24,9 +24,8 @@
     </table>
     <p></p>
 <script type="text/javascript">
-		
-$(function(){
-	var projectId = '${project.id}';
+	var loadData = function(){
+		var projectId = '${project.id}';
 		$('#detail').datagrid({
 			height: $(window).height()  - 300,
 			url: '/user/queryAllUsersWithProject?projectId='+projectId ,
@@ -66,6 +65,11 @@ $(function(){
 		        }},
 		    ]]
 		});
+	}	
+$(function(){
+	
+		loadData();
+	
 		$('#close').on('click',function(){
 			window.close();
 		});
