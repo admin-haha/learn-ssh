@@ -51,4 +51,14 @@ public class CommonRepository<T> {
 		return result;
     	
     }
+  
+  public List<String> queryAllNotice(){
+		String sql = "select content from notice order by notice_order ";
+		logger.info("【通知】获取通知的sql为:"+sql);
+		try {
+			return jdbcTemplate.queryForList(sql, String.class);
+		}catch(Exception e) {
+			return null;
+		}
+	}
 }

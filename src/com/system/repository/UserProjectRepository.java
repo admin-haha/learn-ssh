@@ -82,7 +82,7 @@ public class UserProjectRepository extends BaseRepository<UserProject> {
 	}
 	
 	public UserProject queryByUserId(String userId) {
-		String sql = "select json_object('userId',user_id,'projectId',project_id) from college where user_id = '"+userId+"' ";
+		String sql = "select json_object('userId',user_id,'projectId',project_id,'score',score,'memo',memo) from college where user_id = '"+userId+"' ";
 		logger.info("【学院】获取学院的sql为:"+sql); 
 		String result = jdbcTemplate.queryForObject(sql, String.class);
 		return GsonUtils.getGson().fromJson(result, UserProject.class);

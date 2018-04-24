@@ -130,7 +130,7 @@ public class UserService {
 	
 	public String queryUsersWithProjectByParamsVo(ParamsVo paramsVo) {
 		JsonObject result = new JsonObject();
-		String sql = "select json_object('id',u.user_id,'name',u.name,'account',u.account,'mobile',u.mobile,'gender',(case when u.gender = 0 then '男' else '女' end),'role',r.name,'college',c.name,'department',d.name,'createTime',DATE_FORMAT(u.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(u.update_time,'%Y-%m-%d')) from users u "
+		String sql = "select json_object('id',u.user_id,'name',u.name,'score',up.score,'memo',up.memo,'account',u.account,'mobile',u.mobile,'gender',(case when u.gender = 0 then '男' else '女' end),'role',r.name,'college',c.name,'department',d.name,'createTime',DATE_FORMAT(u.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(u.update_time,'%Y-%m-%d')) from users u "
 				+ " left join college c on c.id = u.college_id left join department d on u.department_id = d.id and d.college_id = c.id "
 				+ " left join useroles ur on ur.user_id = u.user_id "
 				+ " left join roles r on r.role_id = ur.role_id "
@@ -174,6 +174,10 @@ public class UserService {
 		}
 		
 		return workbook;
+	}
+	
+	public List<String> queryAllNotice(){
+		return commonRepository.queryAllNotice();
 	}
 	
 }

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>分配权限</title>
+<title>选题人员</title>
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <link type="text/css" rel="stylesheet" href="/css/common.css" />
@@ -13,6 +13,9 @@
 <script type="text/javascript" src="/jquery-easyui/locale/easyui-lang-zh_CN.js" ></script>
 </head>
 <body class="easyui-layout">
+	<input type="hidden" value="${user.id }" id='userId' />
+	<input type="hidden" value="${project.belongTo }" id='teacher' />
+	<input type="hidden" value="${project.id }" id='projectId' />
 	<h2>当前题目:<font style="color:red;">${project.title }</font></h2>
     <p>选择该题目的人员</p>
     <div style="text-align: center;"><button class="button-blue" id="close" style="width:30%;">关闭</button></div>
@@ -43,12 +46,34 @@ $(function(){
 		        {field:'account', title:'登陆账号', width: '15%',halign: 'center',align:'center'},
 		        {field:'mobile', title:'联系电话', width: '15%',halign: 'center',align:'center'},
 		        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
-		        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'}
+		        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'},
+		        {field:'score', title:'得分', width: '15%',halign: 'center',align:'center',formatter:function(val,rec){
+		        	if(''==val){
+		        		return '<font color="red">'+未评分+'</font>';
+		        	}else{
+		        		return '<font color="green">'+val+'</font>';
+		        	}
+		        }},
+		        {field:'memo', title:'评语', width: '15%',halign: 'center',align:'center'},
+		        {field:'opt', title:'评分', width: '15%',halign: 'center',align:'center',formatter:function(val,rec){
+		        	var userId = $('#userId').val();
+		        	var teacher = $('#teacher').val();
+		        	if(userId==teacher){
+		        		return '<a href="javascript:score(\''+rec.id+'\');">评分</a>';
+		        	}else{
+		        		return '-';
+		        	}
+		        }},
 		    ]]
 		});
 		$('#close').on('click',function(){
 			window.close();
 		});
+		
+		var score = function(userId){
+			var projectId = $('#projectId').val();
+			myOpen('/project/score?userId='+id+'&projectId='+projectId,500,500);
+		}
 });
 
 

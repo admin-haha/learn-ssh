@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加人员</title>
+<title>人员注册</title>
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <link type="text/css" rel="stylesheet" href="/css/common.css" />
@@ -15,7 +15,7 @@
 <body class="easyui-layout">
 	<div class="main-add" style="height: 550px;">
 		<div class="row-div bg-red">
-			<h3>添加人员</h3>
+			<h3>注册</h3>
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>人员名称</label></div>
@@ -92,7 +92,6 @@
 					$.messager.alert('提示',msg.msg,'info',function(){
 						if('0'==msg.flag){
 							window.close();
-							window.opener.loadData();
 						}
 					});
 				}
@@ -106,6 +105,20 @@
 			var pwd2 = $("#password2").val();
 			if(!name||''==name||'undefined'==name){
 				$.messager.alert('提示','请输入角色名称','warn');
+				return ;
+			}
+			
+			if(!account||''==account||'undefined'==account){
+				$.messager.alert('提示','请输入登陆账号','warn');
+				return ;
+			}
+			
+			if(!pwd||''==pwd||'undefined'==pwd){
+				$.messager.alert('提示','请输入登录密码','warn');
+				return ;
+			}
+			if(!pwd2||''==pwd2||'undefined'==pwd2){
+				$.messager.alert('提示','请确认密码','warn');
 				return ;
 			}
 			

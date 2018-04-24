@@ -53,7 +53,7 @@
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>详细描述</label></div>
-			<div class="row-right"><div class="row-right"><textarea cols="30" rows="3" id="detail" draggable="false"></textarea></div></div>
+			<div class="row-right"><textarea cols="30" rows="3" id="detail" draggable="false"></textarea></div>
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>学生个数</label></div>
@@ -63,7 +63,7 @@
 		</div>
 		<div class="row-div">
 			<div class="row-left"><label>备注</label></div>
-			<div class="row-right"><div class="row-right"><textarea cols="30" rows="3" id="memo" draggable="false"></textarea></div></div>
+			<div class="row-right"><textarea cols="30" rows="3" id="memo" draggable="false"></textarea></div>
 		</div>
 		<div class="bottom-div">
 			<button class="button-blue" id="save">提交</button>

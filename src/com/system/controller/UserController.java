@@ -1,12 +1,10 @@
 package com.system.controller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +71,11 @@ public class UserController {
 	@RequestMapping(value="/add",method=RequestMethod.GET)
 	public String toSaveUser(HttpServletRequest request,HttpServletResponse response) {
 		return "/user/add";
+	}
+	
+	@RequestMapping(value="/register",method=RequestMethod.GET)
+	public String toRegisterUser(HttpServletRequest request,HttpServletResponse response) {
+		return "/user/register";
 	}
 	
 	@RequestMapping(value="/update",method=RequestMethod.GET)

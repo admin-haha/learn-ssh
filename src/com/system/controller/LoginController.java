@@ -30,15 +30,16 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping(value="/index",method=RequestMethod.GET)
-	public String index(HttpServletRequest request,HttpServletResponse response) {
+	public String index(HttpServletRequest request,HttpServletResponse response,ModelMap context) {
+		context.addAttribute("notices", userService.queryAllNotice());
 		
-		
-		return "/login";
+		return "/index";
 	}
 	
 	//非法登录，直接返回至登录页
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String illegalLogin(final HttpServletRequest request) {
+	public String illegalLogin(final HttpServletRequest request,ModelMap context) {
+		context.addAttribute("notices", userService.queryAllNotice());
 		return  "/login";
 	}
 	//不接收Get请求
@@ -54,6 +55,8 @@ public class LoginController {
 			
 		}
 		if(vo==null) {
+			context.addAttribute("notices", userService.queryAllNotice());
+			context.addAttribute("error","人员登录信息有误！");
 			return "/login";
 		}
 		request.getSession().setAttribute(Constant.SESSION_KEY, vo);

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>分配权限</title>
+<title>选题结果</title>
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/bootstrap/easyui.css" />
 <link type="text/css" rel="stylesheet" href="/jquery-easyui/themes/icon.css" />
 <link type="text/css" rel="stylesheet" href="/css/common.css" />
@@ -13,45 +13,88 @@
 <script type="text/javascript" src="/jquery-easyui/locale/easyui-lang-zh_CN.js" ></script>
 </head>
 <body class="easyui-layout">
-	<h2>当前题目:<font style="color:red;">${project.title }</font></h2>
-    <p>选择该题目的人员</p>
-    <div style="text-align: center;"><button class="button-blue" id="close" style="width:30%;">关闭</button></div>
-    <div style="margin:20px 0;"></div>
-    <table title="分配权限" id="detail"  >
-    </table>
-    <p></p>
+	<div class="main-add" style="height: 550px;">
+		<div class="row-div bg-red">
+			<h3>选题结果</h3>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>题目名称</label></div>
+			<div class="row-right"><input type="text" value="${project.title }" readonly="readonly" /></div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>题目描述</label></div>
+			<div class="row-right"><input type="text" value="${project.detail }" readonly="readonly" /></div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>题目备注</label></div>
+			<div class="row-right"><input type="text" value="${project.memo }" readonly="readonly" /></div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>所属学院</label></div>
+			<div class="row-right">
+					<input readonly="readonly" id="college" class="easyui-combobox" data-options="
+				                    url:'/college/queryAllCollege',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'text',
+				                    multiple:false,
+				                    panelHeight:'auto',
+				                    onLoadSuccess:function(){
+				                    	$('#college').combobox('setValue','${project.collegeId }');
+				                    },
+				                    onChange:function(newValue,oldValue){
+				                    	$('#department').combobox('reload','/department/queryAllDepartment?collegeIds='+newValue);
+				                    },
+				                    onUnselect:function(){
+				                    	$('#department').combobox('clear');
+				                    }
+				                    ">
+			</div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>所属专业</label></div>
+			<div class="row-right">
+					<input readonly="readonly" id="department" class="easyui-combobox" data-options="url:'/department/queryAllDepartment',
+						                    method:'get',
+						                    valueField:'id',
+						                    textField:'text',
+						                    multiple:false,
+						                    panelHeight:'auto',
+						                    onLoadSuccess:function(){
+						                    	$('#department').combobox('setValue','${project.departmentId }');
+						                    }">
+			</div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>指导教师</label></div>
+			<div class="row-right">
+					<input type="text" value="${teacher.name }" readonly="readonly"/>
+			</div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>评分</label></div>
+			<div class="row-right">
+					<input type="text" value="${userProject.score }" readonly="readonly"/>
+			</div>
+		</div>
+		<div class="row-div">
+			<div class="row-left"><label>评语</label></div>
+			<div class="row-right">
+					<input type="text" value="${userProject.memo }" readonly="readonly"/>
+			</div>
+		</div>
+		<div class="bottom-div">
+			<button class="button-blue" id="close">关闭</button>
+		</div>
+	</div>
 <script type="text/javascript">
 		
-$(function(){
-	var projectId = '${project.id}';
-		$('#detail').datagrid({
-			height: $(window).height()  - 300,
-			url: '/user/queryAllUsersWithProject?projectId='+projectId ,
-			pageNumber: 1,
-	        pageSize:20,
-			fit: true,//自动大小
-			nowrap:true, //换行
-	        rownumbers:true,//行号
-	        striped: true,
-	        singleSelect:true,//单行选取
-	        pagination:true,//显示分页
-		    columns:[[
-		    	{field:'name', title:'人员名称', width: '10%',halign: 'center',align:'center'},
-		        {field:'gender', title:'性别', width: '5%',halign: 'center',align:'center'},
-		        {field:'department', title:'所属科系', width: '15%',halign: 'center',align:'center'},
-		        {field:'college', title:'所属学院', width: '15%',halign: 'center',align:'center'},
-		        {field:'account', title:'登陆账号', width: '15%',halign: 'center',align:'center'},
-		        {field:'mobile', title:'联系电话', width: '15%',halign: 'center',align:'center'},
-		        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
-		        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'}
-		    ]]
-		});
-		$('#close').on('click',function(){
+		var close = function(){
 			window.close();
-		});
-});
-
-
+		}
+		
+		
+		$('#close').on('click',close);
 </script>
 </body>
 </html>

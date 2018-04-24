@@ -110,14 +110,54 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/choose/result",method=RequestMethod.GET)
-	public String chooseResult(HttpServletRequest request,HttpServletResponse response) {
+	public String chooseResult(HttpServletRequest request,HttpServletResponse response,ModelMap content) {
+		
 		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		UserProject userProject = null;
+		Project project = null;
+		Users teacher = null;
+		if(user!=null) {
+			userProject = userProjectService.queryByUserId(user.getId());
+			
+			if(userProject!=null) {
+				project = projectService.queryById(userProject.getProjectId());
+				
+				if(project!=null) {
+					teacher = userService.queryById(project.getBelongTo());
+				}
+			}
+		}
+		content.addAttribute("user", user);
+		content.addAttribute("teacher", teacher);
+		content.addAttribute("userProject", userProject);
+		content.addAttribute("project", project);
 		return "/project/user-choose-project";
+	}
+	
+	@RequestMapping(value="/score",method=RequestMethod.GET)
+	public String toScore(HttpServletRequest request,HttpServletResponse response,ModelMap content,String userId,String projectId) {
+		
+		Users user = userService.queryById(userId);
+		Project project = projectService.queryById(projectId);
+		content.addAttribute("user", user);
+		content.addAttribute("project", project);
+		return "/project/score";
+	}
+	
+	@RequestMapping(value="/score",method=RequestMethod.POST)
+	@ResponseBody
+	public String score(HttpServletRequest request,HttpServletResponse response,ModelMap content,@RequestBody UserProject userProject) {
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		userProject.setCheckBy(user.getId());
+		userProjectService.update(userProject);
+		return "{'flag':'0','msg':'保存成功'}";
 	}
 	
 	@RequestMapping(value="/toChooseResult",method=RequestMethod.GET)
 	public String toChooseProject(HttpServletRequest request,HttpServletResponse response,String id,ModelMap content) {
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
 		content.addAttribute("project", projectService.queryById(id));
+		content.addAttribute("user", user);
 		return "/project/choose-result";
 	}
 	

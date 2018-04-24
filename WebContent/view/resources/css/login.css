@@ -1,0 +1,47 @@
+ * {
+    font-size: 15px;
+    font-family:'Microsoft YaHei',微软雅黑,'Times New Roman';
+    text-decoration: none;
+}
+
+P#sigcopys {
+    PADDING-RIGHT: 0.4em;
+    BORDER-TOP: #9d9c9d 1px dotted;
+    PADDING-LEFT: 0.4em;
+    FONT-SIZE: 100%;
+    PADDING-BOTTOM: 0.4em;
+    MARGIN: 0.6em 0em 1em 0px;
+    PADDING-TOP: 0.4em;
+    BORDER-BOTTOM: #9d9c9d 1px dotted;
+    TEXT-ALIGN: left
+} #yregft {
+    PADDING-TOP: 5px
+} .style85Copy {
+    FONT-SIZE: 15px;
+    COLOR: #606060;
+    font-family:'Microsoft YaHei',微软雅黑,'Times New Roman';
+} .style8Copy {
+    FONT-SIZE: 15px;
+    COLOR: #939393;
+   font-family:'Microsoft YaHei',微软雅黑,'Times New Roman';
+} .bgr {
+} .line {
+    outline: double 5px;
+} .friendLink {
+    padding-top: 6px;
+    text-align: right;
+    color: #738197;
+} .friendLink a:link, .friendLink a:visited, .friendLink a:hover, .friendLink a:active {
+    margin: 0 10px;
+    color: #738197;
+} .friendLink a:hover {
+    color: #fff;
+    background: #738197;
+    text-decoration: none;
+}
+.button, .button1 {
+    cursor: pointer;
+}
+.pull-left {
+	float: left;
+}

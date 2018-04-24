@@ -26,6 +26,12 @@
 						<input id="uploadFile" type="file"  name="uploadFile" />
 				</form>
 		</div>
+		<div style="text-indent: 2em;">
+			规则：<br/>
+			 <p>1.人员导入将使用手机号码作为默认登陆账号和密码，所以必须填写；<br/></p>
+			 <p>2.学院和科系请参照模板中“学院&科系”的内容进行填写，填写对应的ID<br/></p>
+			 <p>3.性别请输入1或者0.   1：女  0：男<br/></p>
+		</div>
 		<div class="bottom-div">
 			<button class="button-blue" id="save">提交</button>
 		</div>
