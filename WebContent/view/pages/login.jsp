@@ -78,12 +78,12 @@
         <table width="1000" border="0" align="center" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="1000" valign="top" colspan="2">
-                    <img src="img/login-top1.jpg" width="1000" height="450" />
+                    <img src="img/login-top.jpg" width="1000" height="450" />
                 </td>
             </tr>
             <tr>
                 <td width="1000" valign="top">
-                <img src="img/login_down_left_011.jpg" width="587" height="133" />
+                <img src="img/login_down_left_01.jpg" width="587" height="133" />
                 </td>
                 <td width="500" valign="top">
                     <div class="bgr">

@@ -87,29 +87,27 @@ var loadData = function(){
 	        {field:'teacher', title:'指导教师', width: '10%',halign: 'center',align:'center'},
 	        {field:'detail', title:'详细描述', width: '20%',halign: 'center',align:'center'},
 	        {field:'memo', title:'备注', width: '10%',halign: 'center',align:'center'},
-	        {field:'status', title:'审核状态', width: '10%',halign: 'center',align:'center',rowspan:2,formatter:function(val,rec){
-	        	if(rec.status==0){
-    				return '<font color="green">审核通过</font>';
-    			}else{
-		    		return '<font color="red">审核不通过</font>';
-    			}
-	        }},
+	        {field:'checkStatus', title:'审核状态', width: '10%',halign: 'center',align:'center',formatter:function(val,rec){
+		        	if(rec.checkStatus==0){
+	    				return '<font color="green">审核通过</font>';
+	    			}else{
+			    		return '<font color="red">审核不通过</font>';
+	    			}}
+	        },
 	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
 	        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'},
 	        {field:'studentCount', title:'需要人数', width: '5%',halign: 'center',align:'center'},
 	        {field:'chooseCount', title:'已选人数', width: '5%',halign: 'center',align:'center',formatter:function(val,rec){
         				return rec.chooseCount+'人选择';
-        }},
-	        {field:'status', title:'选题状态', width: '5%',halign: 'center',align:'center',formatter:function(val,rec){
+        		}},
+        		{field:'status', title:'选题状态', width: '5%',halign: 'center',align:'center',formatter:function(val,rec){
 	        		if('0' == rec.canChoose){
 	        			return '<font color="red">进行中</font>';
 	        		}else{
 	        			return '<font color="green">已完成</font>';
 	        		}
-	        	
-	        }}
-	    ]],
-	    onLoadSuccess: function (data) {
+	        	}}]],
+	    onLoadSuccess:function (data) {
 	    	$("#noResultMsg").remove();
         	var rowArray = $('#detail').datagrid('getRows');               
               if(rowArray.length==0){

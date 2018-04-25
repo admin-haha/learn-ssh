@@ -108,8 +108,7 @@ var loadData = function(){
 	        		}else{
 	        			return '-';
 	        		}
-				}
-	        }]],
+	        	}}]],
 	    onLoadSuccess:function (data) {
 	    	$("#noResultMsg").remove();
         	var rowArray = $('#detail').datagrid('getRows');               

@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.system.constant.Constant;
+import com.system.po.RoleFunction;
+import com.system.po.Roles;
 import com.system.po.Useroles;
 import com.system.po.Users;
+import com.system.service.RolesService;
 import com.system.service.UserService;
 import com.system.service.UserolesService;
 import com.system.utils.WebHelper;
@@ -23,6 +26,8 @@ public class LoginController {
 	private UserService userService;
 	@Autowired
 	private UserolesService userolesService;
+	@Autowired
+	private RolesService rolesService;
 	/**
 	 * 首页
 	 * @param request
@@ -62,8 +67,13 @@ public class LoginController {
 		request.getSession().setAttribute(Constant.SESSION_KEY, vo);
 		//人员角色
 		Useroles useroles = userolesService.queryByUserId(vo.getId());
+		if(useroles!=null) {
+			Roles roles = rolesService.queryById(useroles.getRoleId());
+			context.addAttribute("roleId", roles!=null?roles.getId():"-1");
+			context.addAttribute("roleName", roles!=null?roles.getName():"");
+		}
+		
 		context.addAttribute("user",vo);
-		context.addAttribute("roleId", useroles!=null?useroles.getRoleId():"");
 		//WebHelper.sendData(response, "{'flag':'0','msg':'保存成功'}");
 		
 		return "/index";

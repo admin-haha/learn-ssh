@@ -87,8 +87,8 @@ var loadData = function(){
 	        {field:'teacher', title:'指导教师', width: '10%',halign: 'center',align:'center'},
 	        {field:'detail', title:'详细描述', width: '20%',halign: 'center',align:'center'},
 	        {field:'memo', title:'备注', width: '10%',halign: 'center',align:'center'},
-	        {field:'status', title:'审核状态', width: '10%',halign: 'center',align:'center',formatter:function(val,rec){
-	        	if(rec.status==0){
+	        {field:'checkStatus', title:'审核状态', width: '10%',halign: 'center',align:'center',formatter:function(val,rec){
+	        	if(rec.checkStatus==0){
     				return '<font color="green">审核通过</font>';
     			}else{
 		    		return '<font color="red">审核不通过</font>';
@@ -121,7 +121,6 @@ var check = function(id,status){
 				url:"/project/check",
 				async:false,
 				type:"POST",
-				contentType : 'application/json',
 				data:{"projectId":id,'status':status},
 				success:function(data){
 					msg = eval('(' + data + ')');

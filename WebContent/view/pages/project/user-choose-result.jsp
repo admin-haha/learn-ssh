@@ -84,17 +84,15 @@
 			</div>
 		</div>
 		<div class="bottom-div">
-			<button class="button-blue" id="close">关闭</button>
+			<button class="button-blue" id="refresh">刷新</button>
 		</div>
 	</div>
-<script type="text/javascript">
-		
-		var close = function(){
-			window.close();
-		}
-		
-		
-		$('#close').on('click',close);
-</script>
+	<script type="text/javascript">
+		(function(){
+			$('#refresh').on('click',function(){
+				window.location.reload();
+			});
+		})()
+	</script>
 </body>
 </html>

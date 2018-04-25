@@ -48,8 +48,9 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/check",method=RequestMethod.GET)
-	public String tocheckPage(HttpServletRequest request,HttpServletResponse response) {
-		
+	public String tocheckPage(HttpServletRequest request,HttpServletResponse response,ModelMap content) {
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		content.addAttribute("userId", user!=null?user.getId():"");
 		return "/project/check";
 	}
 	
@@ -122,16 +123,20 @@ public class ProjectController {
 		UserProject userProject = null;
 		Project project = null;
 		Users teacher = null;
-		if(user!=null) {
-			userProject = userProjectService.queryByUserId(user.getId());
-			
-			if(userProject!=null) {
-				project = projectService.queryById(userProject.getProjectId());
+		try {
+			if(user!=null) {
+				userProject = userProjectService.queryByUserId(user.getId());
 				
-				if(project!=null) {
-					teacher = userService.queryById(project.getBelongTo());
+				if(userProject!=null) {
+					project = projectService.queryById(userProject.getProjectId());
+					
+					if(project!=null) {
+						teacher = userService.queryById(project.getBelongTo());
+					}
 				}
 			}
+		}catch(Exception e) {
+			
 		}
 		content.addAttribute("user", user);
 		content.addAttribute("teacher", teacher);
@@ -178,9 +183,8 @@ public class ProjectController {
 	@RequestMapping(value="/choose",method=RequestMethod.POST)
 	@ResponseBody
 	public String chooseProject(HttpServletRequest request,HttpServletResponse response,@RequestBody UserProject userProject) {
-		if(StringUtils.isBlank(userProject.getUserId())) {
-			userProject.setUserId("9850c514b6134a468bebdf4406cea9e1");
-		}
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		userProject.setUserId(user.getId());
 		userProjectService.deleteByUserId(userProject.getUserId());
 		userProjectService.save(userProject);
 		return "{'flag':'0','msg':'保存成功'}";
