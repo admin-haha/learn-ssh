@@ -47,7 +47,7 @@
 				                    multiple:false,
 				                    panelHeight:'auto',
 				                    onLoadSuccess:function(){
-				                    	$('#college').combobox('setValue','${usercollegeId }');
+				                    	$('#college').combobox('setValue','${user.collegeId }');
 				                    },
 				                    onChange:function(newValue,oldValue){
 				                    	$('#department').combobox('reload','/department/queryAllDepartment?collegeIds='+newValue);

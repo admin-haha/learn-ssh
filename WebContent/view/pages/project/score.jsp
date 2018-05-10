@@ -21,7 +21,7 @@
 			<div class="row-left"><label>题目名称</label></div>
 			<div class="row-right">
 				<input type="text" value="${project.title }" readonly="readonly"/>
-				<input type="hidden" id="projectId" value="${project.title }" />
+				<input type="hidden" id="projectId" value="${project.id }" />
 			</div>
 		</div>
 		<div class="row-div">

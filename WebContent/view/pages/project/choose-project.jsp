@@ -15,7 +15,7 @@
 <body class="easyui-layout">
 <input id="userId" class="hidden" value="${userId }" />
 <div style='display:none'><span style="visibility: hidden;white-space: nowrap; font-size: 24px; " id='forStrLen'></span></div>
-<div region="north"  split="true" id="northdiv" style="height:100px;padding:10px;">
+<div region="north"  split="true" id="northdiv" style="height:130px;padding:10px;">
 	<table width="98%">
 				<tr>
 					<td width="30%">
@@ -40,6 +40,20 @@
 				                    ">
 					</td> 
 					<td width="40%">
+					
+					</td>
+				</tr>
+				<tr>
+					<td width="30%">
+					<label>指导教师：</label>
+					<input id="teacher" class="easyui-combobox" data-options="url:'/user/queryAllTeacher',
+						                    method:'get',
+						                    valueField:'id',
+						                    textField:'text',
+						                    multiple:true,
+						                    panelHeight:'auto'">
+					</td>
+					<td width="30%">
 					<label>所属科系：</label>
 					<input id="department" class="easyui-combobox" data-options="url:'/department/queryAllDepartment',
 						                    method:'get',
@@ -47,6 +61,8 @@
 						                    textField:'text',
 						                    multiple:true,
 						                    panelHeight:'auto'">
+					</td> 
+					<td width="40%">
 					</td>
 				</tr>
 				<tr>
@@ -68,56 +84,124 @@
  </div>
 </div>
 <script type="text/javascript">
+
+var detail = function(id){
+	myOpen('/project/detail?projectId='+id,500,500);
+}
+
 var loadData = function(){
 	$('#detail').datagrid({
-		height: $(window).height()  - 30,
+		height: $(window).height() - 30,
 		url: '/project/query',
-		queryParams:{name:$('#name').val(),college:$('#college').val(),department:$('#department').val()},
-		method:'POST',
+		queryParams: {
+			name: $('#name').val(),
+			college: $('#college').val(),
+			department: $('#department').val(),
+			teachers: $('#teacher').val()
+		},
+		method: 'POST',
 		pageNumber: 1,
-        pageSize:20,
-		fit: true,//自动大小
-		nowrap:true, //换行
-        rownumbers:true,//行号
-        striped: true,
-        singleSelect:true,//单行选取
-        pagination:true,//显示分页
-	    columns:[[
-	        {field:'text', title:'题目名称', width: '15%',halign: 'center',align:'center'},
-	        {field:'teacher', title:'指导教师', width: '10%',halign: 'center',align:'center'},
-	        {field:'detail', title:'详细描述', width: '20%',halign: 'center',align:'center'},
-	        {field:'memo', title:'备注', width: '10%',halign: 'center',align:'center'},
-	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
-	        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'},
-	        {field:'studentCount', title:'需要人数', width: '5%',halign: 'center',align:'center'},
-	        {field:'chooseCount', title:'已选人数', width: '5%',halign: 'center',align:'center',formatter:function(val,rec){
-        				return rec.chooseCount+'人选择';
-        }},
-	        {field:'status', title:'选题状态', width: '5%',halign: 'center',align:'center',formatter:function(val,rec){
-	        		if('0' == rec.canChoose){
-	        			return '<font color="red">进行中</font>';
-	        		}else{
-	        			return '<font color="green">已完成</font>';
-	        		}
-	        	
-	        }},
-	        {field:'opt', title:'操作', width: '6%',halign: 'center',align:'center',formatter(val,rec){
-	        		var id = rec.id;
-	        		if('0' == rec.canChoose){
-	        			return '<a href="javascript:choose(\''+id+'\',\''+rec.text+'\');">选择</a>';
-	        		}else{
-	        			return '-';
-	        		}
-	        	}}]],
-	    onLoadSuccess:function (data) {
-	    	$("#noResultMsg").remove();
-        	var rowArray = $('#detail').datagrid('getRows');               
-              if(rowArray.length==0){
-               var msg = $("<div id ='noResultMsg' style='display:none;text-align:center;padding:10px;border:1px solid #AAAAA;background-color:yellow;  margin-top:20px;'>您当前的选择，无返回信息，请重新调整条件!</div>"); 
-                  msg.insertAfter($('#detail')); 
-                  msg.show(200); 
-              }  
-       }
+		pageSize: 20,
+		fit: true,
+		//自动大小
+		nowrap: true,
+		//换行
+		rownumbers: true,
+		//行号
+		striped: true,
+		singleSelect: true,
+		//单行选取
+		pagination: true,
+		//显示分页
+		columns: [
+			[{
+				field: 'text',
+				title: '题目名称',
+				width: '15%',
+				halign: 'center',
+				align: 'center'
+			}, {
+				field: 'teacher',
+				title: '指导教师',
+				width: '10%',
+				halign: 'center',
+				align: 'center'
+			}, {
+				field: 'createTime',
+				title: '创建时间',
+				width: '15%',
+				halign: 'center',
+				align: 'center'
+			}, {
+				field: 'updateTime',
+				title: '更新时间',
+				width: '15%',
+				halign: 'center',
+				align: 'center'
+			}, {
+				field: 'studentCount',
+				title: '需要人数',
+				width: '5%',
+				halign: 'center',
+				align: 'center'
+			}, {
+				field: 'chooseCount',
+				title: '已选人数',
+				width: '5%',
+				halign: 'center',
+				align: 'center',
+				formatter: function(val, rec) {
+					return rec.chooseCount + '人选择';
+				}
+			}, {
+				field: 'status',
+				title: '选题状态',
+				width: '5%',
+				halign: 'center',
+				align: 'center',
+				formatter: function(val, rec) {
+					if ('0' == rec.canChoose) {
+						return '<font color="red">进行中</font>';
+					} else {
+						return '<font color="green">已完成</font>';
+					}
+
+				}
+			}, {
+				field: 'detail',
+				title: '详情',
+				width: '10%',
+				halign: 'center',
+				align: 'center',
+				formatter: function(val, rec) {
+					var id = rec.id;
+					return '<a href="javascript:detail(\'' + id + '\');">详情</a>';
+				}
+			}, {
+				field: 'opt',
+				title: '操作',
+				width: '6%',
+				halign: 'center',
+				align: 'center',
+				formatter(val, rec) {
+					var id = rec.id;
+					if ('0' == rec.canChoose) {
+						return '<a href="javascript:choose(\'' + id + '\',\'' + rec.text + '\');">选择</a>';
+					} else {
+						return '-';
+					}
+				}
+			}]
+		],
+		onLoadSuccess: function(data) {
+			$("#noResultMsg").remove();
+			var rowArray = $('#detail').datagrid('getRows');
+			if (rowArray.length == 0) {
+				var msg = $("<div id ='noResultMsg' style='display:none;text-align:center;padding:10px;border:1px solid #AAAAA;background-color:yellow;  margin-top:20px;'>您当前的选择，无返回信息，请重新调整条件!</div>");
+				msg.insertAfter($('#detail'));
+				msg.show(200);
+			}
+		}
 	});
 }
 

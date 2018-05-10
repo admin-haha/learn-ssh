@@ -36,14 +36,16 @@ public class ProjectController {
 	private UserService userService;
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public String queryAllProjects(HttpServletRequest request,HttpServletResponse response) {
-		
+	public String queryAllProjects(HttpServletRequest request,HttpServletResponse response,ModelMap content) {
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		content.addAttribute("userId", user!=null?user.getId():"");
 		return "/project/list";
 	}
 	
 	@RequestMapping(value="/manage",method=RequestMethod.GET)
-	public String toManagePage(HttpServletRequest request,HttpServletResponse response) {
-		
+	public String toManagePage(HttpServletRequest request,HttpServletResponse response,ModelMap content) {
+		Users user = (Users) request.getSession().getAttribute(Constant.SESSION_KEY);
+		content.addAttribute("userId", user!=null?user.getId():"");
 		return "/project/manage";
 	}
 	
@@ -55,13 +57,14 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/query",method=RequestMethod.POST)
-	public void queryAllProjects(HttpServletRequest request,HttpServletResponse response,String name,String department,String college,int rows,int page) {
+	public void queryAllProjects(HttpServletRequest request,HttpServletResponse response,String name,String department,String college,String teachers,int rows,int page) {
 		ParamsVo paramVo = new ParamsVo();
 		paramVo.setName(name);
 		paramVo.setPage(page);
 		paramVo.setRows(rows);
 		paramVo.setCollegeIds(college);
 		paramVo.setDepartmentIds(department);
+		paramVo.setTeacherIds(teachers);
 		WebHelper.sendData(response, projectService.queryProjectsByParamsVo(paramVo));
 	}
 	
@@ -170,6 +173,26 @@ public class ProjectController {
 	public String check(HttpServletRequest request,HttpServletResponse response,ModelMap content,String projectId,Integer status) {
 		projectService.updateStatus(projectId, status);
 		return "{'flag':'0','msg':'保存成功'}";
+	}
+	
+	@RequestMapping(value="/detail",method=RequestMethod.GET)
+	public String check(HttpServletRequest request,HttpServletResponse response,ModelMap content,String projectId) {
+		Project project = projectService.queryById(projectId);
+		Users user = null;
+		if(project!=null) {
+			user = userService.queryById(project.getBelongTo());
+		}
+		
+		content.addAttribute("user", user);
+		content.addAttribute("project", project);
+		return "/project/detail";
+	}
+	
+	@RequestMapping(value="/cancel",method=RequestMethod.DELETE)
+	@ResponseBody
+	public String cancel(HttpServletRequest request,HttpServletResponse response,ModelMap content,@RequestBody UserProject userProject) {
+		userProjectService.delete(userProject);
+		return "{'flag':'0','msg':'取消成功'}";
 	}
 	
 	@RequestMapping(value="/toChooseResult",method=RequestMethod.GET)

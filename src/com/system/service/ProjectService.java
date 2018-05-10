@@ -67,7 +67,9 @@ public class ProjectService {
 		if(StringUtils.isNotBlank(paramsVo.getDepartmentIds())) {
 			sql = sql+"and d.id in ("+paramsVo.getDepartmentIds()+") ";
 		}
-		
+		if(StringUtils.isNotBlank(paramsVo.getTeacherIds())) {
+			sql = sql+"and u.user_id in ("+paramsVo.getTeacherIds()+") ";
+		}
 		int count = commonRepository.count(sql);
 		result.addProperty("total", count);
 		sql = sql +"limit "+paramsVo.getOffset()+","+paramsVo.getRows();

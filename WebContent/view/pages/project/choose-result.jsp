@@ -18,7 +18,6 @@
 	<input type="hidden" value="${project.belongTo }" id='teacher' />
 	<input type="hidden" value="${project.id }" id='projectId' />
 	<h2>当前题目:<font style="color:red;">${project.title }</font></h2>
-    <p>选择该题目的人员</p>
     <div style="text-align: center;"><button class="button-blue" id="close" style="width:30%;">关闭</button></div>
     <div style="margin:20px 0;"></div>
     <table title="选题结果" id="detail"  >
@@ -53,13 +52,12 @@ var score = function(userId){
 		        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
 		        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'},
 		        {field:'score', title:'得分', width: '15%',halign: 'center',align:'center',formatter:function(val,rec){
-		        	var score = '';
+		        	var score = -1;
 		        	try{
-	        			score = paserInt(val);
+	        			score = parseInt(val);
 	        		}catch(err){
-	        			
 	        		}
-		        	if('' == score){
+		        	if(-1 == score){
 		        		return '<font color="red">'+'未评分'+'</font>';
 		        	}else{
 		        		

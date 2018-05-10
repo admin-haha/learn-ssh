@@ -65,7 +65,13 @@ public class UserController {
 		paramVo.setName(name);
 		paramVo.setPage(page);
 		paramVo.setRows(rows);
+		paramVo.setProjectId(projectId);
 		WebHelper.sendData(response, userService.queryUsersWithProjectByParamsVo(paramVo));
+	}
+	
+	@RequestMapping(value="/queryAllTeacher",method=RequestMethod.GET)
+	public void queryAllTeacher(HttpServletRequest request,HttpServletResponse response) {
+		WebHelper.sendData(response, userService.queryAllTeacher());
 	}
 	
 	@RequestMapping(value="/add",method=RequestMethod.GET)

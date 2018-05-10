@@ -97,6 +97,11 @@ public class UserService {
 		return usersRepository.queryById(id);
 	}
 	
+	public String queryAllTeacher() {
+		List<String> datas = usersRepository.queryAllTeacher();
+		return GsonUtils.list2JsonArray(datas).toString();
+	}
+	
 	public String queryUsersByParamsVo(ParamsVo paramsVo) {
 		JsonObject result = new JsonObject();
 		String sql = "select json_object('id',u.user_id,'name',u.name,'account',u.account,'mobile',u.mobile,'gender',(case when u.gender = 0 then '男' else '女' end),'role',r.name,'college',c.name,'department',d.name,'createTime',DATE_FORMAT(u.create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(u.update_time,'%Y-%m-%d')) from users u "

@@ -32,6 +32,10 @@ public class ParamsVo implements Serializable {
 	
 	private String status;
 	
+	private String roleName; 
+	
+	private String teacherIds;
+	
 	public Integer getPage() {
 		return page;
 	}
@@ -121,6 +125,25 @@ public class ParamsVo implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public String getTeacherIds() {
+		if(StringUtils.isNotBlank(teacherIds)) {
+			return "'"+StringUtils.join(StringUtils.split(teacherIds,","),"','")+"'";
+		}
+		return teacherIds;
+	}
+
+	public void setTeacherIds(String teacherIds) {
+		this.teacherIds = teacherIds;
 	}
 	
 }

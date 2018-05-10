@@ -15,7 +15,7 @@
 <body class="easyui-layout">
 <input id="userId" class="hidden" value="${userId }" />
 <div style='display:none'><span style="visibility: hidden;white-space: nowrap; font-size: 24px; " id='forStrLen'></span></div>
-<div region="north"  split="true" id="northdiv" style="height:100px;padding:10px;">
+<div region="north"  split="true" id="northdiv" style="height:130px;padding:10px;">
 	<table width="98%">
 				<tr>
 					<td width="30%">
@@ -40,6 +40,20 @@
 				                    ">
 					</td> 
 					<td width="40%">
+					
+					</td>
+				</tr>
+				<tr>
+					<td width="30%">
+					<label>指导教师：</label>
+					<input id="teacher" class="easyui-combobox" data-options="url:'/user/queryAllTeacher',
+						                    method:'get',
+						                    valueField:'id',
+						                    textField:'text',
+						                    multiple:true,
+						                    panelHeight:'auto'">
+					</td>
+					<td width="30%">
 					<label>所属科系：</label>
 					<input id="department" class="easyui-combobox" data-options="url:'/department/queryAllDepartment',
 						                    method:'get',
@@ -47,6 +61,8 @@
 						                    textField:'text',
 						                    multiple:true,
 						                    panelHeight:'auto'">
+					</td> 
+					<td width="40%">
 					</td>
 				</tr>
 				<tr>
@@ -73,7 +89,7 @@ var loadData = function(){
 	$('#detail').datagrid({
 		height: $(window).height()  - 30,
 		url: '/project/query' ,
-		queryParams:{name:$('#name').val(),college:$('#college').val(),department:$('#department').val()},
+		queryParams:{name:$('#name').val(),college:$('#college').val(),department:$('#department').val(),teachers:$('#teacher').val()},
 		method:'POST',
 		pageNumber: 1,
         pageSize:20,
@@ -86,13 +102,13 @@ var loadData = function(){
 	    columns:[[
 	        {field:'text', title:'题目名称', width: '15%',halign: 'center',align:'center',rowspan:2},
 	        {field:'teacher', title:'指导教师', width: '10%',halign: 'center',align:'center',rowspan:2},
-	        {field:'detail', title:'详细描述', width: '20%',halign: 'center',align:'center',rowspan:2},
-	        {field:'memo', title:'备注', width: '10%',halign: 'center',align:'center',rowspan:2},
 	        {field:'checkStatus', title:'审核状态', width: '10%',halign: 'center',align:'center',rowspan:2,formatter:function(val,rec){
 	        	if(rec.checkStatus==0){
-    				return '<font color="green">审核通过</font>';
+    				return '<font color="blue">待审核</font>';
+    			}else if(rec.checkStatus==1){
+		    		return '<font color="green">审核通过</font>';
     			}else{
-		    		return '<font color="red">审核不通过</font>';
+    				return '<font color="red">审核不通过</font>';
     			}
 	        }},
 	        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center',rowspan:2},
@@ -114,9 +130,14 @@ var loadData = function(){
 	        		}
 	        	
 	        }},
-	        {field:'opt', title:'操作', width: '30%',colspan:2,halign: 'center',align:'center',rowspan:1}
+	        {field:'opt', title:'操作', width: '30%',colspan:3,halign: 'center',align:'center',rowspan:1}
 	       
 	    ],[ 
+	    	{field:'detail', title:'详情', width: '10%',halign: 'center',align:'center',rowspan:1,formatter:function(val,rec){
+        		 	var id = rec.id;
+		    		return '<a href="javascript:detail(\''+id+'\');">详情</a>';
+        		}
+	    	},
 		    {field:'update', title:'修改', width: '10%',halign: 'center',align:'center',rowspan:1,formatter:function(val,rec){
 		    	var userId = $('#userId').val();
         		if(userId == rec.belongTo){
@@ -152,6 +173,10 @@ var loadData = function(){
 
 var update = function(id){
 	myOpen('/project/update?id='+id,500,500);
+}
+
+var detail = function(id){
+	myOpen('/project/detail?projectId='+id,500,500);
 }
 
 var toChooseResult = function(id){

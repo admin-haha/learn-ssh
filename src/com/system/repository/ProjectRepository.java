@@ -84,7 +84,7 @@ public class ProjectRepository extends BaseRepository<Project> {
 
 	@Override
 	public Project queryById(String id) {
-		String sql = "select json_object('id',id,'title',title,'status',status,'detail',detail,'memo',memo,'collegeId',college_id,'departmentId',department_id,'studentCount',student_count,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from project where id = '"+id+"' ";
+		String sql = "select json_object('id',id,'title',title,'status',status,'belongTo',belong_to,'detail',detail,'memo',memo,'collegeId',college_id,'departmentId',department_id,'studentCount',student_count,'createTime',DATE_FORMAT(create_time,'%Y-%m-%d'),'updateTime',DATE_FORMAT(update_time,'%Y-%m-%d')) from project where id = '"+id+"' ";
 		logger.info("【题目】获取题目的sql为:"+sql); 
 		String result = jdbcTemplate.queryForObject(sql, String.class);
 		return GsonUtils.getGson().fromJson(result, Project.class);

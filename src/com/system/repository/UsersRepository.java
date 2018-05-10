@@ -102,4 +102,14 @@ public class UsersRepository extends BaseRepository<Users> {
 		String result = jdbcTemplate.queryForObject(sql, String.class);
 		return GsonUtils.getGson().fromJson(result, Users.class);
 	}
+	
+	public List<String> queryAllTeacher(){
+		String sql = "select json_object('id',u.user_id,'text',u.name) from users u join useroles ur on ur.user_id = u.user_id join roles r on r.role_id = ur.role_id where r.name like '%教师%' ";
+		logger.info("【人员】获取人员的sql为:"+sql);
+		try {
+			return jdbcTemplate.queryForList(sql, String.class);
+		}catch(Exception e) {
+			return null;
+		}
+	}
 }
