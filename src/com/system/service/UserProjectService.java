@@ -42,6 +42,9 @@ public class UserProjectService {
 	public void deleteByUserId(String userId) {
 		userProjectRepository.deleteByUserId(userId);
 	}
+	public void updateStatus(String projectId,String userId,Integer status) {
+		userProjectRepository.updateStatus(projectId, userId, status);
+	}
 	
 	public UserProject queryById(String id) {
 		return userProjectRepository.queryById(id);

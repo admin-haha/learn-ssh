@@ -51,6 +51,15 @@ var score = function(userId){
 		        {field:'mobile', title:'联系电话', width: '15%',halign: 'center',align:'center'},
 		        {field:'createTime', title:'创建时间', width: '15%',halign: 'center',align:'center'},
 		        {field:'updateTime', title:'更新时间', width: '15%',halign: 'center',align:'center'},
+		        {field:'status', title:'选题状态', width: '10%',halign: 'center',align:'center',formatter:function(val,rec){
+		        	if(rec.status==0){
+	    				return '<font color="blue">待通过</font>';
+	    			}else if(rec.status==1){
+			    		return '<font color="green">通过</font>';
+	    			}else{
+	    				return '<font color="red">不通过</font>';
+	    			}
+		        }},
 		        {field:'score', title:'得分', width: '15%',halign: 'center',align:'center',formatter:function(val,rec){
 		        	var score = -1;
 		        	try{
@@ -73,9 +82,40 @@ var score = function(userId){
 		        	}else{
 		        		return '-';
 		        	}
-		        }}]]
+		        }},
+		        {field:'opt-check', title:'操作', width: '10%',halign: 'center',align:'center',formatter:function(val,rec){
+		        var userId = $('#userId').val();
+		        	var teacher = $('#teacher').val();
+		        	if(userId==teacher){
+		        		var id = rec.id;
+					return '<a href="javascript:check(\''+id+'\',\''+projectId+'\','+1+');">通过</a>|<a href="javascript:check(\''+id+'\',\''+projectId+'\','+2+');">不通过</a>';
+		        	}else{
+		        		return '-';
+		        	}
+			}},]]
 		});
 	}	
+	
+	var check = function(id,projectId,status){
+		$.messager.confirm('警告','审核操作是否继续？',function(r){
+			if(r){
+				$.ajax({
+					url:"/userProject/check",
+					async:false,
+					type:"POST",
+					data:{"userId":id,"projectId":projectId,'status':status},
+					success:function(data){
+						msg = eval('(' + data + ')');
+						$.messager.alert('提示',msg.msg,'info',function(){
+							if('0'==msg.flag){
+								loadData();
+							}
+						});
+					}
+				});
+			}
+		});
+	}
 	
 $(function(){
 	

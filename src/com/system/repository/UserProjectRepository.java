@@ -67,6 +67,19 @@ public class UserProjectRepository extends BaseRepository<UserProject> {
 		jdbcTemplate.execute(sql.toString());
 	}
 	
+	public void updateStatus(String projectId,String userId,Integer status) {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append(" update userproject ");
+		sql.append(" set ");
+		sql.append(" status = ").append(status).append(" ,");
+		sql.append(" update_time = current_timestamp ");
+		sql.append(" where project_id = '").append(projectId).append("' ");
+		sql.append(" and user_id = '").append(userId).append("' ");
+		logger.info("【人员题目】修改题目状态的sql为:"+sql.toString());
+		jdbcTemplate.execute(sql.toString());
+	}
+	
 	@Override
 	public List<BasePo> queryForList(ParamsVo vo) {
 		// TODO Auto-generated method stub
