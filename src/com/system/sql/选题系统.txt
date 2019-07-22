@@ -1,0 +1,103 @@
+主要设计思想：
+	权限系统是基于角色的权限控制系统；
+	前后端数据交换格式统一使用json，前端数据提交方式使用ajax; 
+	对于多表关联的数据获取全部通过原生sql实现；
+
+开发环境：
+	jdk1.7,eclipse,tomcat7,mysql5.7+
+
+远程调试工具:teamViewer. (先安装下)
+主要框架：
+	spring 用来管理整个项目所有对象的生命周期
+	spring MVC 用来实现MVC三层框架
+	hibernate:orm(数据持久化)框架
+	log4j2:日志框架（可以忽略）
+	jquery easyUI:前端框架
+	jquery:js框架
+
+
+模块：
+	登陆：
+	人员管理：#
+		查询 /user/list
+		新增 /user/add
+		修改 /user/update
+	角色管理：#
+		查询 /role/list
+		新增 /role/add
+		修改 /role/update
+		分配角色 /role/assignRole
+	权限管理：#
+		查询 /function/list
+		新增	/function/add
+		修改 /fuction/update
+		分配权限 /function/assignFunction
+	题目管理：#
+		新增
+		修改
+		删除
+		选题
+
+
+数据表：
+    users:人员表
+    	user_id:人员id
+    	name:姓名
+    	gender:性别
+    	college_id:所属学院
+    	department_id:所属专业
+    	account:登陆账号
+    	password:登陆密码
+    	mobile:联系电话
+    	create_time:创建日期
+    	update_time:更新日期
+    roles:角色表
+    	role_id:角色id
+    	name:角色名称
+    	create_time:创建日期
+    	update_time:更新日期
+    function:权限表
+    	func_id:权限id
+    	name:权限名称
+    	func_url:权限url
+    	func_order:权限顺序		
+    	create_time:创建日期
+    	update_time:更新日期
+    useroles:人员角色关系表
+    	user_id:人员id
+    	role_id:角色id
+    	create_time:创建日期
+    rolefunction:角色权限关系表
+    	role_id:角色id
+    	func_id:权限id
+    	create_time:创建日期	
+    college:学院表
+    	id:学院id
+    	name:学院名称
+    	create_time:创建日期
+    	update_time:更新日期
+    department:科系表
+    	id:科系id
+    	name:科系名称
+    	create_time:创建日期
+    	update_time:更新日期
+    project:毕业设计题目
+    	id:题目id
+    	title:题目名称
+    	detail:详细描述
+    	memo:备注
+    	student_count:该题目所需学生个数
+    	belong_to:题目所属教师的user_id
+    	college_id:所属学院
+    	department_id:所属专业
+    	create_time:创建日期
+    	update_time:更新日期
+    userproject:学生和毕设题目关系
+    	user_id:学生id
+    	project_id:毕设题目id
+    	score:得分
+    	memo:评语
+    	check_by:审批人user_id
+    	check_date:审批日期
+    	create_time:创建日期
+    	update_time:更新日期
